@@ -7,6 +7,7 @@ const initialState = {
   isPlaying: false,
   activeSong: {},
   genreListId: '',
+  youtubeUrl: null,
 };
 
 const playerSlice = createSlice({
@@ -16,12 +17,10 @@ const playerSlice = createSlice({
     setActiveSong: (state, action) => {
       state.activeSong = action.payload.song;
 
-      if (action.payload?.data?.tracks?.hits) {
-        state.currentSongs = action.payload.data.tracks.hits;
-      } else if (action.payload?.data?.properties) {
-        state.currentSongs = action.payload?.data?.tracks;
+      if (action.payload?.data?.chart_items) {
+        state.currentSongs = action.payload.data.chart_items.map((item) => item.item);
       } else {
-        state.currentSongs = action.payload.data;
+        state.currentSongs = [];
       }
 
       state.currentIndex = action.payload.i;
@@ -57,9 +56,13 @@ const playerSlice = createSlice({
     selectGenreListId: (state, action) => {
       state.genreListId = action.payload;
     },
+
+    setYoutubeUrl: (state, action) => {
+      state.youtubeUrl = action.payload;
+    },
   },
 });
 
-export const { setActiveSong, nextSong, prevSong, playPause, selectGenreListId } = playerSlice.actions;
+export const { setActiveSong, nextSong, prevSong, playPause, selectGenreListId, setYoutubeUrl } = playerSlice.actions;
 
 export default playerSlice.reducer;

@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
+import { searchYouTube } from "../../api/youtube";
+
 import {
   nextSong,
   prevSong,
   playPause,
+  setYoutubeUrl,
 } from "../../redux/features/playerSlice";
 import Controls from "./Controls";
 import Player from "./Player";
@@ -13,8 +16,14 @@ import Track from "./Track";
 import VolumeBar from "./VolumeBar";
 
 const MusicPlayer = () => {
-  const { activeSong, currentSongs, currentIndex, isActive, isPlaying } =
-    useSelector((state) => state.player);
+  const {
+    activeSong,
+    currentSongs,
+    currentIndex,
+    isActive,
+    isPlaying,
+    youtubeUrl,
+  } = useSelector((state) => state.player);
   const [duration, setDuration] = useState(0);
   const [seekTime, setSeekTime] = useState(0);
   const [appTime, setAppTime] = useState(0);
@@ -57,6 +66,14 @@ const MusicPlayer = () => {
     }
   };
 
+  useEffect(() => {
+    if (activeSong) {
+      searchYouTube(activeSong?.title, activeSong?.artist_names).then((url) => {
+        dispatch(setYoutubeUrl(url));
+      });
+    }
+  }, [activeSong]);
+
   return (
     <div className="relative sm:px-12 px-8 w-full flex items-center justify-between">
       <Track
@@ -86,7 +103,7 @@ const MusicPlayer = () => {
           appTime={appTime}
         />
         <Player
-          activeSong={activeSong}
+          youtubeUrl={youtubeUrl}
           volume={volume}
           isPlaying={isPlaying}
           seekTime={seekTime}
