@@ -1,7 +1,16 @@
 import React, { useRef, useEffect } from "react";
 import ReactPlayer from "react-player";
 
-const Player = ({ youtubeUrl, isPlaying, volume, seekTime, onEnded, onTimeUpdate, onLoadedData, repeat }) => {
+const Player = ({
+  youtubeUrl,
+  isPlaying,
+  volume,
+  seekTime,
+  onEnded,
+  onTimeUpdate,
+  onLoadedData,
+  repeat,
+}) => {
   const playerRef = useRef(null);
 
   useEffect(() => {
@@ -18,7 +27,9 @@ const Player = ({ youtubeUrl, isPlaying, volume, seekTime, onEnded, onTimeUpdate
       volume={volume}
       loop={repeat}
       onEnded={onEnded}
-      onProgress={({ playedSeconds }) => onTimeUpdate({ target: { currentTime: playedSeconds } })}
+      onProgress={({ playedSeconds }) =>
+        onTimeUpdate({ target: { currentTime: playedSeconds } })
+      }
       onDuration={(duration) => onLoadedData({ target: { duration } })}
       width="0"
       height="0"

@@ -23,8 +23,7 @@ const SongCard = ({ song, isPlaying, activeSong, data, i }) => {
             activeSong?.title === song?.title
               ? "flex bg-black bg-opacity-70"
               : "hidden"
-          }`}
-        >
+          }`}>
           <PlayPause
             isPlaying={isPlaying}
             activeSong={activeSong}
