@@ -97,7 +97,7 @@ const SongDetails = () => {
             <h2 className="text-white text-2xl font-bold mb-2">
               Album: {albumData?.title}
             </h2>
-            <p className="text-gray-400 text-lg mb-4">
+            <p className="text-base text-gray-300 mb-4">
               Artist: {albumData?.artist?.name}
             </p>
             <img
@@ -142,10 +142,10 @@ const SongDetails = () => {
                       </div>
 
                       <div className="flex-1">
-                        <p className="text-white text-sm font-semibold">
+                        <p className="text-xl font-bold text-white">
                           {track.title}
                         </p>
-                        <p className="text-gray-400 text-xs">{`${durationMinutes}:${durationSeconds
+                        <p className="text-base text-gray-300 mt-1">{`${durationMinutes}:${durationSeconds
                           .toString()
                           .padStart(2, "0")}`}</p>
                       </div>
