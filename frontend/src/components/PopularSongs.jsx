@@ -1,6 +1,7 @@
 import SongBar from "./SongBar";
 
-const RelatedSongs = ({
+const PopularSongs = ({
+  artistId,
   artistData,
   isPlaying,
   activeSong,
@@ -9,7 +10,7 @@ const RelatedSongs = ({
 }) => {
   return (
     <div className="flex flex-col">
-      <h1 className="font-bold text-3xl text-white">Related Songs:</h1>
+      <h1 className="font-bold text-3xl text-white">Popular Songs:</h1>
 
       <div className="mt-6 w-full flex flex-col">
         {artistData?.data?.map((song, i) => (
@@ -17,6 +18,7 @@ const RelatedSongs = ({
             key={song?.id}
             song={song}
             i={i}
+            artistId={artistId}
             isPlaying={isPlaying}
             activeSong={activeSong}
             handlePauseClick={handlePause}
@@ -28,4 +30,4 @@ const RelatedSongs = ({
   );
 };
 
-export default RelatedSongs;
+export default PopularSongs;

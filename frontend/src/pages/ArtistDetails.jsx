@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { DetailsHeader, Error, Loader, RelatedSongs } from "../components";
+import { DetailsHeader, Error, Loader, PopularSongs } from "../components";
 
 import {
   useGetArtistDetailsQuery,
@@ -23,18 +23,18 @@ const ArtistDetails = () => {
 
   const {
     data: artistData,
-    isFetching: isFetchingRelatedSongs,
-    isError: isErrorRelatedSongs,
+    isFetching: isFetchingPopularSongs,
+    isError: isErrorPopularSongs,
   } = useGetArtistTopTracksQuery(
     { artistId: songData?.artist?.id, limit: 10 },
     { skip: !shouldFetchLyrics }
   );
 
-  if (isFetchingSongDetails || isFetchingRelatedSongs) {
+  if (isFetchingSongDetails || isFetchingPopularSongs) {
     return <Loader />;
   }
 
-  if (isErrorRelatedSongs || isSongDetailsError) {
+  if (isErrorPopularSongs || isSongDetailsError) {
     return <Error />;
   }
 
@@ -46,7 +46,7 @@ const ArtistDetails = () => {
         songData={songData}
       />
 
-      <RelatedSongs
+      <PopularSongs
         songData={songData}
         // artistId={songData?.artist?.id}
         artistData={artistData}

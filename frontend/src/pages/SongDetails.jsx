@@ -1,6 +1,12 @@
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { DetailsHeader, Error, Loader, RelatedSongs } from "../components";
+import {
+  DetailsHeader,
+  Error,
+  Loader,
+  PopularSongs,
+  RelatedSongs,
+} from "../components";
 
 import { setActiveSong, playPause } from "../redux/features/playerSlice";
 import {
@@ -24,10 +30,10 @@ const SongDetails = () => {
 
   const {
     data: artistData,
-    isFetching: isFetchingRelatedSongs,
-    isError: isErrorRelatedSongs,
+    isFetching: isFetchingPopularSongs,
+    isError: isErrorPopularSongs,
   } = useGetArtistTopTracksQuery(
-    { artistId: songData?.artist?.id, limit: 10 },
+    { artistId: songData?.artist?.id, limit: 5 },
     { skip: !shouldFetchLyrics }
   );
 
@@ -49,18 +55,17 @@ const SongDetails = () => {
     dispatch(playPause(true));
   };
 
-  if (isFetchingSongDetails || isFetchingRelatedSongs || isFetchingLyrics) {
+  if (isFetchingSongDetails || isFetchingPopularSongs || isFetchingLyrics) {
     return <Loader />;
   }
 
-  if (isErrorRelatedSongs || isSongDetailsError) {
+  if (isErrorPopularSongs || isSongDetailsError) {
     return <Error />;
   }
 
   return (
     <div className="flex flex-col">
       <DetailsHeader
-        // artistId={songData?.artist?.id}
         songid={songid}
         artistData={songData?.artist}
         songData={songData}
@@ -80,15 +85,21 @@ const SongDetails = () => {
         </div>
       </div>
 
-      <RelatedSongs
-        songData={songData}
-        // artistId={songData?.artist?.id}
+      <PopularSongs
         artistData={artistData}
         isPlaying={isPlaying}
         activeSong={activeSong}
         handlePause={handlePauseClick}
         handlePlay={handlePlayClick}
       />
+
+      {/* <RelatedSongs
+        artistData={artistData}
+        isPlaying={isPlaying}
+        activeSong={activeSong}
+        handlePause={handlePauseClick}
+        handlePlay={handlePlayClick}
+      /> */}
     </div>
   );
 };
