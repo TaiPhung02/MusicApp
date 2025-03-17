@@ -29,6 +29,16 @@ app.get("/api/deezer/track/:trackId", async (req, res) => {
   }
 });
 
+app.get("/api/deezer/artist/:artistId", async (req, res) => {
+  try {
+    const { artistId } = req.params;
+    const response = await axios.get(`https://api.deezer.com/artist/${artistId}`);
+    res.json(response.data);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch artist details" });
+  }
+});
+
 app.get("/api/deezer/artist/:artistId/top", async (req, res) => {
   try {
     const { artistId } = req.params;

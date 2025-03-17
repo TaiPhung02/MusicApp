@@ -60,7 +60,8 @@ const SongDetails = () => {
   return (
     <div className="flex flex-col">
       <DetailsHeader
-        artistId={songData?.artist?.id}
+        // artistId={songData?.artist?.id}
+        songid={songid}
         artistData={songData?.artist}
         songData={songData}
       />
@@ -81,12 +82,12 @@ const SongDetails = () => {
 
       <RelatedSongs
         songData={songData}
+        // artistId={songData?.artist?.id}
         artistData={artistData}
         isPlaying={isPlaying}
         activeSong={activeSong}
         handlePause={handlePauseClick}
         handlePlay={handlePlayClick}
-        artistId={songData?.artist?.id}
       />
     </div>
   );

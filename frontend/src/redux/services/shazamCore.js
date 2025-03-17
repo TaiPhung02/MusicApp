@@ -15,6 +15,10 @@ export const deezerApi = createApi({
       query: (trackId) => `/track/${trackId}`,
     }),
 
+    getArtistDetails: builder.query({
+      query: ( artistId ) => `/artist/${artistId}`,
+    }),
+
     getArtistTopTracks: builder.query({
       query: ({ artistId, limit = 10 }) =>
         `/artist/${artistId}/top?limit=${limit}`,
@@ -25,6 +29,7 @@ export const deezerApi = createApi({
 export const {
   useGetTopTracksQuery,
   useGetSongDetailsQuery,
+  useGetArtistDetailsQuery,
   useGetArtistTopTracksQuery,
 } = deezerApi;
 
