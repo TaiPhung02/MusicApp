@@ -55,5 +55,16 @@ app.get("/api/deezer/artist/:artistId/top", async (req, res) => {
   }
 });
 
+app.get("/api/deezer/album/:albumId", async (req, res) => {
+  try {
+    const { albumId } = req.params;
+    const response = await axios.get(`https://api.deezer.com/album/${albumId}`);
+    res.json(response.data);
+  } catch (error) {
+    console.error("Error fetching album details:", error);
+    res.status(500).json({ error: "Failed to fetch album details" });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

@@ -20,10 +20,14 @@ const playerSlice = createSlice({
       state.activeSong = song;
       state.currentIndex = i;
       state.isActive = true;
-
-      if (data?.data) {
+    
+      if (data?.tracks?.data) {
+        // if data from album
+        state.currentSongs = data.tracks.data;
+      } else if (data?.data) {
+        // if data from top song
         state.currentSongs = data.data;
-      } else {
+      } else if (state.currentSongs.length === 0) {
         state.currentSongs = [];
       }
     },

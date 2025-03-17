@@ -1,6 +1,7 @@
 import SongBar from "./SongBar";
 
 const PopularSongs = ({
+  songid,
   artistId,
   artistData,
   isPlaying,
@@ -15,6 +16,7 @@ const PopularSongs = ({
       <div className="mt-6 w-full flex flex-col">
         {artistData?.data?.map((song, i) => (
           <SongBar
+            songid={songid}
             key={song?.id}
             song={song}
             i={i}
