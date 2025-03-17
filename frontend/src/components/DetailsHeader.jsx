@@ -1,35 +1,47 @@
 import { Link } from "react-router-dom";
 
-const DetailsHeader = ({ artistId, songid, artistData, songData }) => (
-  <div className="relative w-full flex flex-col">
-    <div className="w-full bg-gradient-to-l from-transparent to-black sm:h-48 h-48"></div>
+const DetailsHeader = ({ artistId, songid, artistData, songData }) => {
+  return (
+    <div className="relative w-full flex flex-col mb-8">
+      <div className="w-full h-60 sm:h-72 bg-gradient-to-b from-gray-900 via-gray-800 to-black relative rounded-lg">
+        <img
+          src={artistId ? artistData?.picture_big : songData?.album?.cover_big}
+          alt="background-art"
+          className="absolute inset-0 w-full h-full object-cover opacity-20 blur-lg"
+        />
+      </div>
 
-    <div className="absolute inset-0 flex items-center">
-      <img
-        alt="art"
-        src={artistId ? artistData?.picture_big : songData?.album?.cover_big}
-        className="sm:w-48 w-28 sm:h-48 h-28 rounded-full object-cover border-2 shadow-xl shadow-black"
-      />
+      <div className="absolute inset-0 flex items-center px-6 sm:px-12">
+        <div className="relative">
+          <img
+            alt="art"
+            src={
+              artistId ? artistData?.picture_big : songData?.album?.cover_big
+            }
+            className="sm:w-48 w-32 sm:h-48 h-32 rounded-full object-cover border-4 border-gray-700 shadow-2xl shadow-black transform transition-all duration-300 hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-white opacity-10 rounded-full blur-xl"></div>
+        </div>
 
-      <div className="ml-5">
-        <p className="font-bold sm:text-3xl text-xl text-white">
-          {artistId ? artistData?.name : songData?.title}
-        </p>
+        <div className="ml-6">
+          <p className="font-bold sm:text-4xl text-2xl text-white drop-shadow-lg">
+            {artistId ? artistData?.name : songData?.title}
+          </p>
 
-        {!artistId && (
-          <Link
-            to={`/artists/${songData?.artist?.id}`}
-            state={{ songid: songid }}>
-            <p className="text-base text-gray-400 mt-2">
-              {songData?.artist?.name}
-            </p>
-          </Link>
-        )}
+          {!artistId && (
+            <Link
+              to={`/artists/${songData?.artist?.id}`}
+              state={{ songid: songid }}
+            >
+              <p className="text-lg text-gray-300 mt-2 hover:text-white transition-colors duration-200">
+                {songData?.artist?.name}
+              </p>
+            </Link>
+          )}
+        </div>
       </div>
     </div>
-
-    <div className="w-full sm:h-44 h-24"></div>
-  </div>
-);
+  );
+};
 
 export default DetailsHeader;
