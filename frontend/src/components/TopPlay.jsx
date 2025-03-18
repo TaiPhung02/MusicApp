@@ -33,13 +33,13 @@ const TopChartCard = ({
           <p className="text-xl font-bold text-white">{song?.title}</p>
         </Link>
 
-        {/* <Link to={`artists/${song?.artist?.id}`}>
+        <Link to={`artists/${song?.artist?.id}`}>
+          <p className="hover:underline text-base text-gray-300 mt-1">{song?.artist?.name}</p>
+        </Link>
+
+        {/* <Link to={`/songs/${song?.id}`}>
           <p className="text-base text-gray-300 mt-1">{song?.artist?.name}</p>
         </Link> */}
-
-        <Link to={`/songs/${song?.id}`}>
-          <p className="text-base text-gray-300 mt-1">{song?.artist?.name}</p>
-        </Link>
       </div>
     </div>
 

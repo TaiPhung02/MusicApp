@@ -1,52 +1,55 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DetailsHeader, Error, Loader, PopularSongs } from "../components";
 import {
   useGetArtistTopTracksQuery,
-  useGetSongDetailsQuery,
   useGetArtistAlbumsQuery,
   useGetAlbumTracksQuery,
+  useGetArtistDetailsQuery,
 } from "../redux/services/shazamCore";
 
 const ArtistDetails = () => {
-  const location = useLocation();
+  const { artistId } = useParams();
   const navigate = useNavigate();
-  const songid = location.state?.songid;
   const { activeSong, isPlaying } = useSelector((state) => state.player);
   const [selectedAlbumId, setSelectedAlbumId] = useState(null);
 
   const {
-    data: songData,
-    isFetching: isFetchingSongDetails,
-    isError: isSongDetailsError,
-  } = useGetSongDetailsQuery(songid);
-
-  const shouldFetchData = songData?.artist?.id;
+    data: artistDetails,
+    isFetching: isFetchingArtistDetails,
+    isError: isErrorArtistDetails,
+  } = useGetArtistDetailsQuery(artistId);
 
   const {
     data: artistData,
     isFetching: isFetchingPopularSongs,
     isError: isErrorPopularSongs,
-  } = useGetArtistTopTracksQuery(
-    { artistId: songData?.artist?.id, limit: 10 },
-    { skip: !shouldFetchData }
-  );
+  } = useGetArtistTopTracksQuery({ artistId, limit: 10 });
 
   const {
     data: albumsData,
     isFetching: isFetchingAlbums,
     isError: isAlbumsError,
-  } = useGetArtistAlbumsQuery(songData?.artist?.id, { skip: !shouldFetchData });
+  } = useGetArtistAlbumsQuery(artistId);
 
-  const { data: albumTracks, isFetching: isFetchingTracks } =
-    useGetAlbumTracksQuery(selectedAlbumId, { skip: !selectedAlbumId });
+  const {
+    data: albumTracksData,
+    isFetching: isFetchingAlbumTracks,
+    isError: isErrorAlbumTracks,
+  } = useGetAlbumTracksQuery(selectedAlbumId, { skip: !selectedAlbumId });
 
-  if (isFetchingSongDetails || isFetchingPopularSongs || isFetchingAlbums) {
+  useEffect(() => {
+    if (albumTracksData && albumTracksData.data.length > 0) {
+      navigate(`/songs/${albumTracksData.data[0].id}`);
+    }
+  }, [albumTracksData, navigate]);
+
+  if (isFetchingPopularSongs || isFetchingAlbums || isFetchingArtistDetails) {
     return <Loader />;
   }
 
-  if (isErrorPopularSongs || isSongDetailsError || isAlbumsError) {
+  if (isErrorPopularSongs || isAlbumsError || isErrorArtistDetails) {
     return <Error />;
   }
 
@@ -54,21 +57,12 @@ const ArtistDetails = () => {
     setSelectedAlbumId(albumId);
   };
 
-  if (albumTracks?.data?.length > 0) {
-    const firstTrack = albumTracks.data[0];
-    navigate(`/songs/${firstTrack.id}`);
-  }
-
   return (
     <div className="flex flex-col">
-      <DetailsHeader
-        artistId={songData?.artist?.id}
-        artistData={songData?.artist}
-        songData={songData}
-      />
+      <DetailsHeader artistId={artistId} artistData={artistDetails} />
 
       <PopularSongs
-        songData={songData}
+        artistId={artistId}
         artistData={artistData}
         isPlaying={isPlaying}
         activeSong={activeSong}
@@ -82,8 +76,7 @@ const ArtistDetails = () => {
               <div
                 key={album.id}
                 className="bg-gray-800 p-3 rounded-lg shadow-lg cursor-pointer hover:bg-gray-700 transition duration-200"
-                onClick={() => handleAlbumClick(album.id)}
-              >
+                onClick={() => handleAlbumClick(album.id)}>
                 <img
                   src={album.cover_medium}
                   alt={album.title}

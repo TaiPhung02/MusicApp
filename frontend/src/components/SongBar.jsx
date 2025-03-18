@@ -39,7 +39,6 @@ const SongBar = ({
                   <Link
                     key={contributor.id}
                     to={`/artists/${contributor.id}`}
-                    state={{ songid: contributor?.id }}
                     className="hover:underline text-white"
                   >
                     {contributor.name}

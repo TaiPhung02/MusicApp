@@ -57,6 +57,11 @@ const SongDetails = () => {
     dispatch(playPause(true));
   };
 
+  const handlePlayFromArtist = (song, i) => {
+    dispatch(setActiveSong({ song, data: artistData, i }));
+    dispatch(playPause(true));
+  };
+
   if (
     isFetchingSongDetails ||
     isFetchingPopularSongs ||
@@ -72,11 +77,7 @@ const SongDetails = () => {
 
   return (
     <div className="flex flex-col">
-      <DetailsHeader
-        songid={songid}
-        artistData={songData?.artist}
-        songData={songData}
-      />
+      <DetailsHeader artistData={songData?.artist} songData={songData} />
 
       <div className="flex flex-col lg:flex-row gap-8 mb-8">
         <div className="lg:w-1/2">
@@ -117,8 +118,7 @@ const SongDetails = () => {
                   return (
                     <div
                       key={track.id}
-                      className="bg-gray-800 p-3 rounded-lg flex items-center gap-3 relative group"
-                    >
+                      className="bg-gray-800 p-3 rounded-lg flex items-center gap-3 relative group">
                       <div className="relative w-16 h-16">
                         <img
                           src={albumData?.cover_small}
@@ -131,8 +131,7 @@ const SongDetails = () => {
                               ? handlePauseClick()
                               : handlePlayFromAlbum(track, i)
                           }
-                          className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                        >
+                          className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                           {isCurrentSong && isPlaying ? (
                             <FaPause size={20} className="text-white" />
                           ) : (
@@ -164,7 +163,7 @@ const SongDetails = () => {
         isPlaying={isPlaying}
         activeSong={activeSong}
         handlePause={handlePauseClick}
-        handlePlay={handlePlayFromAlbum}
+        handlePlay={handlePlayFromArtist}
       />
     </div>
   );

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const DetailsHeader = ({ artistId, songid, artistData, songData }) => {
+const DetailsHeader = ({ artistId, artistData, songData }) => {
   return (
     <div className="relative w-full flex flex-col mb-8">
       <div className="w-full h-60 sm:h-72 bg-gradient-to-b from-gray-900 via-gray-800 to-black relative rounded-lg">
@@ -31,7 +31,6 @@ const DetailsHeader = ({ artistId, songid, artistData, songData }) => {
           {!artistId && (
             <Link
               to={`/artists/${songData?.artist?.id}`}
-              state={{ songid: songid }}
             >
               <p className="text-lg text-gray-300 mt-2 hover:text-white transition-colors duration-200">
                 {songData?.artist?.name}

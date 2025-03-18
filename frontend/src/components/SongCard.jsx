@@ -41,9 +41,9 @@ const SongCard = ({ song, isPlaying, activeSong, data, i }) => {
           <Link to={`/songs/${song?.id}`}>{song?.title}</Link>
         </p>
 
-        <p className="text-sm truncate text-gray-300 mt-1">
-          {/* <Link to={`artists/${song?.artist?.id}`}>{song?.artist?.name}</Link> */}
-          <Link to={`/songs/${song?.id}`}>{song?.artist?.name}</Link>
+        <p className="hover:underline text-sm truncate text-gray-300 mt-1">
+          <Link to={`artists/${song?.artist?.id}`}>{song?.artist?.name}</Link>
+          {/* <Link to={`/songs/${song?.id}`}>{song?.artist?.name}</Link> */}
         </p>
       </div>
     </div>
