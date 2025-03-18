@@ -12,7 +12,9 @@ app.get("/api/deezer/chart", async (req, res) => {
     const limit = req.query.limit || 20;
     const index = req.query.index || 0;
 
-    const response = await axios.get(`https://api.deezer.com/chart/0/tracks?limit=${limit}&index=${index}`);
+    const response = await axios.get(
+      `https://api.deezer.com/chart/0/tracks?limit=${limit}&index=${index}`
+    );
     res.json(response.data);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch data" });
@@ -32,7 +34,9 @@ app.get("/api/deezer/track/:trackId", async (req, res) => {
 app.get("/api/deezer/artist/:artistId", async (req, res) => {
   try {
     const { artistId } = req.params;
-    const response = await axios.get(`https://api.deezer.com/artist/${artistId}`);
+    const response = await axios.get(
+      `https://api.deezer.com/artist/${artistId}`
+    );
     res.json(response.data);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch artist details" });
@@ -47,7 +51,7 @@ app.get("/api/deezer/artist/:artistId/top", async (req, res) => {
     const response = await axios.get(
       `https://api.deezer.com/artist/${artistId}/top?limit=${limit}`
     );
-    
+
     res.json(response.data);
   } catch (error) {
     console.error("Error fetching artist's top tracks:", error);
@@ -86,11 +90,27 @@ app.get("/api/deezer/artist/:artistId/albums", async (req, res) => {
 app.get("/api/deezer/album/:albumId/tracks", async (req, res) => {
   try {
     const { albumId } = req.params;
-    const response = await axios.get(`https://api.deezer.com/album/${albumId}/tracks`);
+    const response = await axios.get(
+      `https://api.deezer.com/album/${albumId}/tracks`
+    );
     res.json(response.data);
   } catch (error) {
     console.error("Error fetching album tracklist:", error);
     res.status(500).json({ error: "Failed to fetch album tracklist" });
+  }
+});
+
+app.get("/api/deezer/chart/albums", async (req, res) => {
+  try {
+    const limit = req.query.limit || 20;
+    const index = req.query.index || 0;
+
+    const response = await axios.get(
+      `https://api.deezer.com/chart/0/albums?limit=${limit}&index=${index}`
+    );
+    res.json(response.data);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch albums chart" });
   }
 });
 

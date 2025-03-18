@@ -36,6 +36,11 @@ export const deezerApi = createApi({
     getAlbumTracks: builder.query({
       query: (albumId) => `/album/${albumId}/tracks`,
     }),
+
+    getTopAlbums: builder.query({
+      query: ({ limit = 20, index = 0 }) =>
+        `/chart/albums?limit=${limit}&index=${index}`,
+    }),
   }),
 });
 
@@ -47,6 +52,7 @@ export const {
   useGetAlbumDetailsQuery,
   useGetArtistAlbumsQuery,
   useGetAlbumTracksQuery,
+  useGetTopAlbumsQuery,
 } = deezerApi;
 
 export const lyricsApi = createApi({

@@ -1,7 +1,8 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { DetailsHeader, Error, Loader, PopularSongs } from "../components";
+import { setActiveSong, playPause } from "../redux/features/playerSlice";
 import {
   useGetArtistTopTracksQuery,
   useGetArtistAlbumsQuery,
@@ -14,6 +15,7 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 const ArtistDetails = () => {
   const { artistId } = useParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { activeSong, isPlaying } = useSelector((state) => state.player);
 
   const [selectedAlbumId, setSelectedAlbumId] = useState(null);
@@ -23,12 +25,12 @@ const ArtistDetails = () => {
 
   const observerRef = useRef();
 
-  // **RESET STATE KHI ARTIST THAY ĐỔI**
+  // **RESET**
   useEffect(() => {
-    setAlbums([]); // Xóa album cũ
-    setPage(0); // Reset page về 0
-    setHasMoreAlbums(true); // Cho phép load album mới
-    setSelectedAlbumId(null); // Xóa album đang chọn
+    setAlbums([]);
+    setPage(0);
+    setHasMoreAlbums(true);
+    setSelectedAlbumId(null);
   }, [artistId]);
 
   const {
@@ -58,7 +60,7 @@ const ArtistDetails = () => {
     isError: isErrorAlbumTracks,
   } = useGetAlbumTracksQuery(selectedAlbumId, { skip: !selectedAlbumId });
 
-  // **CẬP NHẬT DANH SÁCH ALBUM**
+  // update list of album
   useEffect(() => {
     if (albumsData?.data.length === 0) {
       setHasMoreAlbums(false);
@@ -76,7 +78,6 @@ const ArtistDetails = () => {
     }
   }, [albumsData]);
 
-  // **Chuyển hướng khi chọn album**
   useEffect(() => {
     if (albumTracksData?.data?.length > 0) {
       navigate(`/songs/${albumTracksData.data[0].id}`);
@@ -115,6 +116,15 @@ const ArtistDetails = () => {
     setSelectedAlbumId(albumId);
   };
 
+  const handlePauseClick = () => {
+      dispatch(playPause(false));
+    };
+
+  const handlePlayFromArtist = (song, i) => {
+    dispatch(setActiveSong({ song, data: artistData, i }));
+    dispatch(playPause(true));
+  };
+
   return (
     <div className="flex flex-col">
       <DetailsHeader artistId={artistId} artistData={artistDetails} />
@@ -124,6 +134,8 @@ const ArtistDetails = () => {
         artistData={artistData}
         isPlaying={isPlaying}
         activeSong={activeSong}
+        handlePause={handlePauseClick}
+        handlePlay={handlePlayFromArtist}
       />
 
       {albums.length > 0 && (

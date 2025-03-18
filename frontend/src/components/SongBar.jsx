@@ -18,8 +18,7 @@ const SongBar = ({
     <div
       className={`w-full flex flex-row items-center hover:bg-[#4c426e] ${
         activeSong?.title === song?.title ? "bg-[#4c426e]" : "bg-transparent"
-      } py-2 p-4 rounded-lg cursor-pointer mb-2`}
-    >
+      } py-2 p-4 rounded-lg cursor-pointer mb-2`}>
       <h3 className="font-bold text-base text-white mr-3">{i + 1}.</h3>
 
       <div className="flex-1 flex flex-row justify-between items-center">
@@ -42,8 +41,7 @@ const SongBar = ({
                   <Link
                     key={contributor.id}
                     to={`/artists/${contributor.id}`}
-                    className="hover:underline text-white"
-                  >
+                    className="hover:underline text-white">
                     {contributor.name}
                   </Link>
                 ))
@@ -53,15 +51,13 @@ const SongBar = ({
         </div>
       </div>
 
-      {!artistId && (
-        <PlayPause
-          isPlaying={isPlaying}
-          activeSong={activeSong}
-          song={song}
-          handlePause={handlePauseClick}
-          handlePlay={() => handlePlayClick(song, i)}
-        />
-      )}
+      <PlayPause
+        isPlaying={isPlaying}
+        activeSong={activeSong}
+        song={song}
+        handlePause={handlePauseClick}
+        handlePlay={() => handlePlayClick(song, i)}
+      />
     </div>
   );
 };
