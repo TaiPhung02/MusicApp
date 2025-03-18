@@ -22,5 +22,5 @@ export const links = [
   { name: 'Discover', to: '/', icon: HiOutlineHome },
   { name: 'Top Albums', to: '/top-albums', icon: HiOutlinePhotograph },
   { name: 'Top Artists', to: '/top-artists', icon: HiOutlineUserGroup },
-  { name: 'Top Charts', to: '/top-charts', icon: HiOutlineHashtag },
+  { name: 'Top Playlists', to: '/top-playlists', icon: HiOutlineHashtag },
 ];

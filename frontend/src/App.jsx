@@ -5,11 +5,12 @@ import { Searchbar, Sidebar, MusicPlayer, TopPlay } from "./components";
 import {
   ArtistDetails,
   TopArtists,
-  AroundYou,
+  TopAlbums,
   Discover,
   Search,
   SongDetails,
-  TopCharts,
+  TopPlaylists,
+  PlaylistDetails,
 } from "./pages";
 
 const App = () => {
@@ -25,12 +26,13 @@ const App = () => {
           <div className="flex-1 h-fit pb-40">
             <Routes>
               <Route path="/" element={<Discover />} />
+              <Route path="/top-albums" element={<TopAlbums />} />
               <Route path="/top-artists" element={<TopArtists />} />
-              <Route path="/top-charts" element={<TopCharts />} />
-              <Route path="/top-albums" element={<AroundYou />} />
+              <Route path="/top-playlists" element={<TopPlaylists />} />
               <Route path="/artists/:artistId" element={<ArtistDetails />} />
               <Route path="/songs/:songid" element={<SongDetails />} />
               <Route path="/search/:searchTerm" element={<Search />} />
+              <Route path="/playlists/:playlistId" element={<PlaylistDetails />} />
             </Routes>
           </div>
           <div className="xl:sticky relative top-0 h-fit">

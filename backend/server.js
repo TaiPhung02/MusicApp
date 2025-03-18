@@ -114,5 +114,47 @@ app.get("/api/deezer/chart/albums", async (req, res) => {
   }
 });
 
+app.get("/api/deezer/chart/artists", async (req, res) => {
+  try {
+    const limit = req.query.limit || 20;
+    const index = req.query.index || 0;
+
+    const response = await axios.get(
+      `https://api.deezer.com/chart/0/artists?limit=${limit}&index=${index}`
+    );
+
+    res.json(response.data);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch artists" });
+  }
+});
+
+app.get("/api/deezer/chart/playlists", async (req, res) => {
+  try {
+    const limit = req.query.limit || 20;
+    const index = req.query.index || 0;
+
+    const response = await axios.get(
+      `https://api.deezer.com/chart/0/playlists?limit=${limit}&index=${index}`
+    );
+
+    res.json(response.data);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch playlists" });
+  }
+});
+
+app.get("/api/deezer/playlist/:playlistId", async (req, res) => {
+  try {
+    const { playlistId } = req.params;
+    const response = await axios.get(
+      `https://api.deezer.com/playlist/${playlistId}`
+    );
+    res.json(response.data);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch playlist details" });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
