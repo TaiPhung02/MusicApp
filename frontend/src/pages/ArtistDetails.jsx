@@ -8,6 +8,8 @@ import {
   useGetAlbumTracksQuery,
   useGetArtistDetailsQuery,
 } from "../redux/services/shazamCore";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 
 const ArtistDetails = () => {
   const { artistId } = useParams();
@@ -77,10 +79,11 @@ const ArtistDetails = () => {
                 key={album.id}
                 className="bg-gray-800 p-3 rounded-lg shadow-lg cursor-pointer hover:bg-gray-700 transition duration-200"
                 onClick={() => handleAlbumClick(album.id)}>
-                <img
+                <LazyLoadImage
                   src={album.cover_medium}
                   alt={album.title}
                   className="w-full h-auto rounded-lg"
+                  effect="blur"
                 />
                 <p className="text-white text-lg font-semibold mt-2">
                   {album.title}

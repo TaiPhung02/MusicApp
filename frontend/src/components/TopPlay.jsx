@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode } from "swiper";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 
 import PlayPause from "./PlayPause";
 import { playPause, setActiveSong } from "../redux/features/playerSlice";
@@ -22,10 +24,11 @@ const TopChartCard = ({
   <div className="w-full flex flex-row items-center hover:bg-[#4c426e] py-2 p-4 rounded-lg cursor-pointer mb-2">
     <h3 className="font-bold text-base text-white mr-3">{i + 1}.</h3>
     <div className="flex-1 flex flex-row justify-between items-center">
-      <img
+      <LazyLoadImage
         className="w-20 h-20 rounded-lg"
         src={song?.album?.cover_big}
         alt={song?.title}
+        effect="blur"
       />
 
       <div className="flex-1 flex flex-col justify-center mx-3">
@@ -133,10 +136,11 @@ const TopPlay = () => {
               <Link
                 to={`artist?/${song?.artist?.id}`}
                 className="w-full h-full flex">
-                <img
+                <LazyLoadImage
                   src={song?.artist?.picture_big}
                   alt="name"
                   className="rounded-full w-full object-cover"
+                  effect="blur"
                 />
               </Link>
             </SwiperSlide>

@@ -9,6 +9,8 @@ import {
   useGetAlbumDetailsQuery,
   useGetLyricsQuery,
 } from "../redux/services/shazamCore";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 
 const SongDetails = () => {
   const dispatch = useDispatch();
@@ -101,10 +103,11 @@ const SongDetails = () => {
             <p className="text-base text-gray-300 mb-4">
               Artist: {albumData?.artist?.name}
             </p>
-            <img
+            <LazyLoadImage
               src={albumData?.cover_big}
               alt={albumData?.title}
               className="w-full rounded-lg mb-4"
+              effect="blur"
             />
 
             <div>
@@ -120,10 +123,11 @@ const SongDetails = () => {
                       key={track.id}
                       className="bg-gray-800 p-3 rounded-lg flex items-center gap-3 relative group">
                       <div className="relative w-16 h-16">
-                        <img
+                        <LazyLoadImage
                           src={albumData?.cover_small}
                           alt={track.title}
                           className="w-full h-full rounded-lg"
+                          effect="blur"
                         />
                         <button
                           onClick={() =>

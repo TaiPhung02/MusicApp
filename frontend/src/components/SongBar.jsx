@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import PlayPause from "./PlayPause";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 
 const SongBar = ({
   songid,
@@ -21,10 +23,11 @@ const SongBar = ({
       <h3 className="font-bold text-base text-white mr-3">{i + 1}.</h3>
 
       <div className="flex-1 flex flex-row justify-between items-center">
-        <img
+        <LazyLoadImage
           className="w-20 h-20 rounded-lg"
           src={song?.album?.cover_big}
           alt={song?.title}
+          effect="blur"
         />
 
         <div className="flex-1 flex flex-col justify-center mx-3">

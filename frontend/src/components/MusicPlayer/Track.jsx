@@ -1,4 +1,6 @@
 import React from "react";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 
 const Track = ({ isPlaying, isActive, activeSong }) => (
   <div className="flex-1 flex items-center justify-start">
@@ -7,10 +9,11 @@ const Track = ({ isPlaying, isActive, activeSong }) => (
         isPlaying && isActive ? "animate-[spin_3s_linear_infinite]" : ""
       } hidden sm:block h-16 w-16 mr-4`}
     >
-      <img
+      <LazyLoadImage
         src={activeSong?.album?.cover_big}
         alt="cover art"
         className="rounded-full"
+        effect="blur"
       />
     </div>
     <div className="w-[50%]">
