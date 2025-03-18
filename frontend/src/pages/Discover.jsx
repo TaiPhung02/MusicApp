@@ -11,16 +11,24 @@ const Discover = () => {
 
   const [page, setPage] = useState(0);
   const [songs, setSongs] = useState([]);
+  const [hasMoreSongs, setHasMoreSongs] = useState(true);
   const limit = 20;
 
-  const { data, isFetching, error } = useGetTopTracksQuery({
-    limit,
-    index: page * limit,
-  });
+  const { data, isFetching, error } = useGetTopTracksQuery(
+    { limit, index: page * limit },
+    { skip: !hasMoreSongs }
+  );
 
   useEffect(() => {
-    if (data?.data) {
-      setSongs((prevSongs) => [...prevSongs, ...data.data]);
+    if (data?.data?.length === 0) {
+      setHasMoreSongs(false);
+    } else if (data?.data) {
+      setSongs((prev) => {
+        const newSongs = data.data.filter(
+          (song) => !prev.some((prevSong) => prevSong.id === song.id)
+        );
+        return [...prev, ...newSongs];
+      });
     }
   }, [data]);
 
@@ -28,7 +36,7 @@ const Discover = () => {
   const observerRef = useRef();
   const lastSongRef = useCallback(
     (node) => {
-      if (isFetching) return;
+      if (isFetching || !hasMoreSongs) return;
       if (observerRef.current) observerRef.current.disconnect();
 
       observerRef.current = new IntersectionObserver(
@@ -42,7 +50,7 @@ const Discover = () => {
 
       if (node) observerRef.current.observe(node);
     },
-    [isFetching]
+    [isFetching, hasMoreSongs]
   );
 
   const handlePlaySong = (song, index) => {
@@ -55,7 +63,7 @@ const Discover = () => {
     <div className="flex flex-col">
       <div className="w-full flex justify-between items-center sm:flex-row flex-col mt-4 mb-10">
         <h2 className="font-bold text-3xl text-white text-left">Discover</h2>
-        <select
+        {/* <select
           onChange={() => {}}
           className="bg-black text-gray-300 p-3 text-sm rounded-lg outline-none sm:mt-0 mt-5">
           {genres?.map((genre) => (
@@ -63,7 +71,7 @@ const Discover = () => {
               {genre?.title}
             </option>
           ))}
-        </select>
+        </select> */}
       </div>
 
       <div className="flex flex-wrap sm:justify-start justify-center gap-8">

@@ -69,7 +69,13 @@ app.get("/api/deezer/album/:albumId", async (req, res) => {
 app.get("/api/deezer/artist/:artistId/albums", async (req, res) => {
   try {
     const { artistId } = req.params;
-    const response = await axios.get(`https://api.deezer.com/artist/${artistId}/albums`);
+    const limit = req.query.limit || 10;
+    const index = req.query.index || 0;
+
+    const response = await axios.get(
+      `https://api.deezer.com/artist/${artistId}/albums?limit=${limit}&index=${index}`
+    );
+
     res.json(response.data);
   } catch (error) {
     console.error("Error fetching artist's albums:", error);

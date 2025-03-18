@@ -29,7 +29,8 @@ export const deezerApi = createApi({
     }),
 
     getArtistAlbums: builder.query({
-      query: (artistId) => `/artist/${artistId}/albums`,
+      query: ({ artistId, limit = 10, index = 0 }) =>
+        `/artist/${artistId}/albums?limit=${limit}&index=${index}`,
     }),
 
     getAlbumTracks: builder.query({
