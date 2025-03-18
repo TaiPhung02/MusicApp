@@ -3,6 +3,8 @@ import { useEffect, useState, useCallback } from "react";
 import { useGetPlaylistDetailsQuery } from "../redux/services/shazamCore";
 import { Loader, Error, SongTable } from "../components";
 import { FaPlay, FaHeart, FaShareAlt, FaEllipsisH } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { playPause, setActiveSong } from "../redux/features/playerSlice";
 
 const formatDuration = (seconds) => {
   const hours = Math.floor(seconds / 3600);
@@ -10,8 +12,34 @@ const formatDuration = (seconds) => {
   return `${hours} hrs ${minutes} minutes`;
 };
 
+const timeAgo = (dateString) => {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffInSeconds = Math.floor((now - date) / 1000);
+
+  const intervals = [
+    { label: "year", seconds: 31536000 },
+    { label: "month", seconds: 2592000 },
+    { label: "day", seconds: 86400 },
+    { label: "hour", seconds: 3600 },
+    { label: "minute", seconds: 60 },
+  ];
+
+  for (let interval of intervals) {
+    const count = Math.floor(diffInSeconds / interval.seconds);
+    if (count >= 1) {
+      return `${count} ${interval.label}${count > 1 ? "s" : ""} ago`;
+    }
+  }
+
+  return "Just now";
+};
+
 const PlaylistDetails = () => {
   const { playlistId } = useParams();
+  const dispatch = useDispatch();
+  const { activeSong, isPlaying } = useSelector((state) => state.player);
+
   const { data, isFetching, error } = useGetPlaylistDetailsQuery(playlistId);
   const [playlist, setPlaylist] = useState(null);
 
@@ -20,6 +48,17 @@ const PlaylistDetails = () => {
       setPlaylist(data);
     }
   }, [data]);
+
+  const handlePlaySong = (song, index) => {
+    dispatch(playPause(true));
+    dispatch(
+      setActiveSong({ song, data: { data: playlist?.tracks?.data }, i: index })
+    );
+  };
+
+  const handlePauseSong = () => {
+    dispatch(playPause(false));
+  };
 
   if (isFetching) return <Loader title="Loading playlist details..." />;
   if (error || !playlist) return <Error />;
@@ -40,7 +79,9 @@ const PlaylistDetails = () => {
             {playlist?.nb_tracks} tracks | {formatDuration(playlist?.duration)}{" "}
             | {playlist?.fans.toLocaleString()} fans
           </p>
-          <p className="text-gray-500 text-xs">Updated: {playlist?.time_add}</p>
+          <p className="text-gray-400 text-sm">
+            Updated: {timeAgo(playlist?.add_date)}
+          </p>
         </div>
       </div>
 
@@ -61,7 +102,13 @@ const PlaylistDetails = () => {
       </div>
 
       {/* Song Table with Infinite Scroll & Sorting */}
-      <SongTable tracks={playlist?.tracks?.data} />
+      <SongTable
+        tracks={playlist?.tracks?.data}
+        handlePlaySong={handlePlaySong}
+        handlePauseSong={handlePauseSong}
+        activeSong={activeSong}
+        isPlaying={isPlaying}
+      />
     </div>
   );
 };
