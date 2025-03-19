@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-
+import { FiMusic, FiVolume2 } from "react-icons/fi";
+import {
+  BsFillVolumeUpFill,
+  BsVolumeDownFill,
+  BsFillVolumeMuteFill,
+} from "react-icons/bs";
+import { MdPlaylistPlay, MdCast, MdTune } from "react-icons/md"; // Icon Playlist, Chromecast, Adjust
 import { searchYouTube } from "../../api/youtube";
-
 import {
   nextSong,
   prevSong,
@@ -30,7 +35,21 @@ const MusicPlayer = () => {
   const [volume, setVolume] = useState(0.3);
   const [repeat, setRepeat] = useState(false);
   const [shuffle, setShuffle] = useState(false);
+  const [showVolume, setShowVolume] = useState(false);
   const dispatch = useDispatch();
+
+  let hideTimeout;
+
+  const handleMouseEnter = () => {
+    clearTimeout(hideTimeout);
+    setShowVolume(true);
+  };
+
+  const handleMouseLeave = () => {
+    hideTimeout = setTimeout(() => {
+      setShowVolume(false);
+    }, 500);
+  };
 
   useEffect(() => {
     if (currentSongs.length) dispatch(playPause(true));
@@ -38,32 +57,30 @@ const MusicPlayer = () => {
 
   const handlePlayPause = () => {
     if (!isActive) return;
-
-    if (isPlaying) {
-      dispatch(playPause(false));
-    } else {
-      dispatch(playPause(true));
-    }
+    dispatch(playPause(!isPlaying));
   };
 
   const handleNextSong = () => {
     dispatch(playPause(false));
-
-    if (!shuffle) {
-      dispatch(nextSong((currentIndex + 1) % currentSongs.length));
-    } else {
-      dispatch(nextSong(Math.floor(Math.random() * currentSongs.length)));
-    }
+    dispatch(
+      nextSong(
+        shuffle
+          ? Math.floor(Math.random() * currentSongs.length)
+          : (currentIndex + 1) % currentSongs.length
+      )
+    );
   };
 
   const handlePrevSong = () => {
-    if (currentIndex === 0) {
-      dispatch(prevSong(currentSongs.length - 1));
-    } else if (shuffle) {
-      dispatch(prevSong(Math.floor(Math.random() * currentSongs.length)));
-    } else {
-      dispatch(prevSong(currentIndex - 1));
-    }
+    dispatch(
+      prevSong(
+        shuffle
+          ? Math.floor(Math.random() * currentSongs.length)
+          : currentIndex === 0
+          ? currentSongs.length - 1
+          : currentIndex - 1
+      )
+    );
   };
 
   useEffect(() => {
@@ -76,12 +93,17 @@ const MusicPlayer = () => {
 
   return (
     <div className="relative sm:px-12 px-8 w-full flex items-center justify-between">
-      <Track
-        isPlaying={isPlaying}
-        isActive={isActive}
-        activeSong={activeSong}
-      />
-      <div className="flex-1 flex flex-col items-center justify-center">
+      {/* Phần 1: Track */}
+      <div className="flex-1 flex justify-start">
+        <Track
+          isPlaying={isPlaying}
+          isActive={isActive}
+          activeSong={activeSong}
+        />
+      </div>
+
+      {/* Phần 2: Controls + Seekbar + Player (luôn ở giữa) */}
+      <div className="absolute left-1/2 transform -translate-x-1/2 flex flex-col items-center">
         <Controls
           isPlaying={isPlaying}
           isActive={isActive}
@@ -114,13 +136,57 @@ const MusicPlayer = () => {
           onLoadedData={(event) => setDuration(event.target.duration)}
         />
       </div>
-      <VolumeBar
-        value={volume}
-        min="0"
-        max="1"
-        onChange={(event) => setVolume(event.target.value)}
-        setVolume={setVolume}
-      />
+
+      {/* Phần 3: Playlist, Chromecast, Volume, Adjust */}
+      <div className="flex-1 flex justify-end items-center space-x-4">
+        {/* Playlist Icon */}
+        <MdPlaylistPlay size={25} color="#FFF" />
+
+        {/* Chromecast Icon */}
+        <MdCast size={25} color="#FFF" />
+
+        {/* Volume Section */}
+        <div
+          className="relative flex items-center"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
+          {volume > 0.5 ? (
+            <BsFillVolumeUpFill
+              size={25}
+              color="#FFF"
+              onClick={() => setVolume(0)}
+            />
+          ) : volume > 0 ? (
+            <BsVolumeDownFill
+              size={25}
+              color="#FFF"
+              onClick={() => setVolume(0)}
+            />
+          ) : (
+            <BsFillVolumeMuteFill
+              size={25}
+              color="#FFF"
+              onClick={() => setVolume(1)}
+            />
+          )}
+
+          {showVolume && (
+            <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 bg-gray-900 p-2 rounded-lg shadow-lg">
+              <VolumeBar
+                value={volume}
+                min="0"
+                max="1"
+                onChange={(e) => setVolume(e.target.value)}
+                setVolume={setVolume}
+              />
+            </div>
+          )}
+        </div>
+
+        {/* Adjust Icon */}
+        <MdTune size={25} color="#FFF" />
+      </div>
     </div>
   );
 };
