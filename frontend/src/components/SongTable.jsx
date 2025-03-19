@@ -75,26 +75,22 @@ const SongTable = ({
       <div className="grid grid-cols-6 text-gray-400 text-sm pb-2 border-b border-gray-600">
         <p
           className="col-span-3 cursor-pointer flex items-center gap-2"
-          onClick={() => sortTracks("title")}
-        >
+          onClick={() => sortTracks("title")}>
           TRACK {getSortIcon("title")}
         </p>
         <p
           className="cursor-pointer flex items-center gap-2"
-          onClick={() => sortTracks("artist.name")}
-        >
+          onClick={() => sortTracks("artist.name")}>
           ARTIST {getSortIcon("artist.name")}
         </p>
         <p
           className="cursor-pointer flex items-center gap-2"
-          onClick={() => sortTracks("album.title")}
-        >
+          onClick={() => sortTracks("album.title")}>
           ALBUM {getSortIcon("album.title")}
         </p>
         <p
           className="cursor-pointer flex items-center gap-2"
-          onClick={() => sortTracks("time_add")}
-        >
+          onClick={() => sortTracks("time_add")}>
           ADDED {getSortIcon("time_add")}
         </p>
       </div>
@@ -102,25 +98,28 @@ const SongTable = ({
       {displayTracks.map((track, index) => (
         <div
           key={track.id}
-          className="grid grid-cols-6 py-2 text-white hover:bg-gray-800 rounded-lg px-2 cursor-pointer items-center"
-          ref={index === displayTracks.length - 1 ? lastTrackRef : null}
-        >
+          className={`grid grid-cols-6 py-2 text-white rounded-lg px-2 cursor-pointer items-center transition-all duration-300
+          ${
+            isPlaying && activeSong?.title === track.title
+              ? "bg-purple-700 shadow-lg"
+              : "hover:bg-gray-800"
+          }`}
+          ref={index === displayTracks.length - 1 ? lastTrackRef : null}>
           <div className="flex items-center col-span-3">
-            <div className="relative mr-3">
+            <div className="relative mr-3 w-14 h-14">
               <LazyLoadImage
                 src={track.album.cover_small}
                 alt={track.title}
-                className="w-15 h-15 rounded-md"
+                className="w-14 h-14 rounded-md"
                 effect="blur"
               />
               <div
-                className={`absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 transition-opacity duration-300 
+                className={`absolute top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 rounded-md transition-opacity duration-300
               ${
                 isPlaying && activeSong?.title === track.title
                   ? "opacity-100"
                   : "opacity-0 hover:opacity-100"
-              }`}
-              >
+              }`}>
                 <PlayPause
                   isPlaying={isPlaying && activeSong?.title === track.title}
                   activeSong={activeSong}
@@ -130,20 +129,19 @@ const SongTable = ({
                 />
               </div>
             </div>
+
             <p className="truncate">{track.title}</p>
           </div>
 
           <Link
             to={`/artists/${track.artist.id}`}
-            className="text-gray-300 hover:underline truncate"
-          >
+            className="text-gray-300 hover:underline truncate">
             {track.artist.name}
           </Link>
 
           <Link
             to={`/albums/${track.album.id}`}
-            className="text-gray-300 hover:underline truncate"
-          >
+            className="text-gray-300 hover:underline truncate">
             {track.album.title}
           </Link>
 

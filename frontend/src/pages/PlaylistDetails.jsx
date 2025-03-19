@@ -2,7 +2,13 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState, useCallback } from "react";
 import { useGetPlaylistDetailsQuery } from "../redux/services/shazamCore";
 import { Loader, Error, SongTable } from "../components";
-import { FaPlay, FaHeart, FaShareAlt, FaEllipsisH } from "react-icons/fa";
+import {
+  FaPlay,
+  FaHeart,
+  FaShareAlt,
+  FaEllipsisH,
+  FaPause,
+} from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { playPause, setActiveSong } from "../redux/features/playerSlice";
 
@@ -87,9 +93,16 @@ const PlaylistDetails = () => {
 
       {/* Playlist Controls */}
       <div className="flex items-center gap-4 mt-6">
-        <button className="text-white bg-purple-500 hover:bg-purple-600 p-3 rounded-full">
-          <FaPlay size={18} />
+        <button
+          className="text-white bg-purple-500 hover:bg-purple-600 p-3 rounded-full"
+          onClick={() =>
+            isPlaying
+              ? handlePauseSong()
+              : handlePlaySong(playlist?.tracks?.data[0], 0)
+          }>
+          {isPlaying ? <FaPause size={18} /> : <FaPlay size={18} />}
         </button>
+
         <button className="text-gray-300 hover:text-white p-3 rounded-full">
           <FaHeart size={18} />
         </button>
