@@ -1,5 +1,6 @@
 import { Link, useParams } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useInView } from "react-intersection-observer";
 import {
   useSearchTracksQuery,
   useSearchArtistsQuery,
@@ -11,35 +12,71 @@ import Error from "../components/Error";
 import SongTable from "../components/SongTable";
 import { useDispatch, useSelector } from "react-redux";
 import { playPause, setActiveSong } from "../redux/features/playerSlice";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 
 const TABS = ["Tracks", "Artists", "Albums", "Playlists"];
+const LIMIT = 20;
 
 const SearchResults = () => {
   const { query } = useParams();
   const dispatch = useDispatch();
   const { activeSong, isPlaying } = useSelector((state) => state.player);
   const [activeTab, setActiveTab] = useState("Tracks");
+  const [artists, setArtists] = useState([]);
+  const [albums, setAlbums] = useState([]);
+  const [playlists, setPlaylists] = useState([]);
+  const [artistIndex, setArtistIndex] = useState(0);
+  const [albumIndex, setAlbumIndex] = useState(0);
+  const [playlistIndex, setPlaylistIndex] = useState(0);
+  const { ref: artistRef, inView: artistInView } = useInView();
+  const { ref: albumRef, inView: albumInView } = useInView();
+  const { ref: playlistRef, inView: playlistInView } = useInView();
 
   const {
     data: tracksData,
     isLoading: tracksLoading,
     error: tracksError,
   } = useSearchTracksQuery({ query });
+
   const {
     data: artistsData,
     isLoading: artistsLoading,
     error: artistsError,
-  } = useSearchArtistsQuery({ query });
+  } = useSearchArtistsQuery({ query, limit: LIMIT, index: artistIndex });
+
   const {
     data: albumsData,
     isLoading: albumsLoading,
     error: albumsError,
-  } = useSearchAlbumsQuery({ query });
+  } = useSearchAlbumsQuery({ query, limit: LIMIT, index: albumIndex });
+
   const {
     data: playlistsData,
     isLoading: playlistsLoading,
     error: playlistsError,
-  } = useSearchPlaylistsQuery({ query });
+  } = useSearchPlaylistsQuery({ query, limit: LIMIT, index: playlistIndex });
+
+  useEffect(() => {
+    if (artistInView && artistsData?.data?.length) {
+      setArtists((prev) => [...prev, ...artistsData.data]);
+      setArtistIndex((prev) => prev + LIMIT);
+    }
+  }, [artistInView, artistsData]);
+
+  useEffect(() => {
+    if (albumInView && albumsData?.data?.length) {
+      setAlbums((prev) => [...prev, ...albumsData.data]);
+      setAlbumIndex((prev) => prev + LIMIT);
+    }
+  }, [albumInView, albumsData]);
+
+  useEffect(() => {
+    if (playlistInView && playlistsData?.data?.length) {
+      setPlaylists((prev) => [...prev, ...playlistsData.data]);
+      setPlaylistIndex((prev) => prev + LIMIT);
+    }
+  }, [playlistInView, playlistsData]);
 
   if (tracksLoading || artistsLoading || albumsLoading || playlistsLoading)
     return <Loader title="Loading search results..." />;
@@ -47,9 +84,6 @@ const SearchResults = () => {
     return <Error message="Failed to fetch data." />;
 
   const tracks = tracksData?.data || [];
-  const artists = artistsData?.data || [];
-  const albums = albumsData?.data || [];
-  const playlists = playlistsData?.data || [];
 
   const handlePlaySong = (song, index) => {
     dispatch(playPause(true));
@@ -65,8 +99,6 @@ const SearchResults = () => {
       <h2 className="text-2xl font-semibold mb-4">
         Search results for "{query}"
       </h2>
-
-      {/* Tabs */}
       <div className="flex gap-6 mb-4 border-b border-[#1b191f]">
         {TABS.map((tab) => (
           <button
@@ -76,13 +108,12 @@ const SearchResults = () => {
                 ? "border-b-2 border-purple-500 text-white"
                 : "text-gray-400"
             }`}
-            onClick={() => setActiveTab(tab)}>
+            onClick={() => setActiveTab(tab)}
+          >
             {tab}
           </button>
         ))}
       </div>
-
-      {/* Display results based on active tab */}
       <div>
         {activeTab === "Tracks" && (
           <SongTable
@@ -93,46 +124,50 @@ const SearchResults = () => {
             isPlaying={isPlaying}
           />
         )}
-
         {activeTab === "Artists" && (
           <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-3">
-            {artists.map((artist) => (
+            {artists.map((artist, index) => (
               <Link
                 to={`/artists/${artist?.id}`}
                 key={artist?.id}
-                className="relative text-center p-3 rounded-lg transition-all duration-300 hover:bg-[#1b191f] hover:scale-105">
+                className="relative text-center p-3 rounded-lg transition-all duration-300 hover:bg-[#1b191f] hover:scale-105"
+              >
                 <div className="w-full aspect-square">
-                  <img
+                  <LazyLoadImage
                     src={artist?.picture_big}
                     alt={artist?.name}
+                    effect="blur"
                     className="w-full h-full object-cover rounded-full transition-transform duration-300 hover:scale-105"
                   />
                 </div>
-                <h3 className="text-white font-semibold mt-3">
+                <h3 className="text-white font-semibold mt-3 truncate">
                   {artist?.name}
                 </h3>
                 <p className="text-gray-400 text-sm">{artist?.nb_fan} fans</p>
               </Link>
             ))}
+            <div ref={artistRef} />
           </div>
         )}
 
         {activeTab === "Albums" && (
           <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-3">
-            {albums.map((album) => (
+            {albums.map((album, index) => (
               <Link
                 to={`/albums/${album?.id}`}
                 key={album?.id}
-                className="relative text-center p-3 rounded-lg transition-all duration-300 hover:bg-[#1b191f] hover:scale-105">
+                className="relative text-center p-3 rounded-lg transition-all duration-300 hover:bg-[#1b191f] hover:scale-105"
+              >
                 <div className="w-full aspect-square">
-                  <img
+                  <LazyLoadImage
                     src={album?.cover_medium}
                     alt={album?.title}
+                    effect="blur"
                     className="w-full h-full object-cover rounded-lg transition-transform duration-300 hover:scale-105"
                   />
                 </div>
                 <h3 className="text-white font-semibold mt-3 truncate">
-                  {album?.title}
+                  {album.title}
                 </h3>
                 <Link
                   to={`/artists/${album?.artist?.id}`}
@@ -142,20 +177,23 @@ const SearchResults = () => {
                 </Link>
               </Link>
             ))}
+            <div ref={albumRef} />
           </div>
         )}
 
         {activeTab === "Playlists" && (
           <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-3">
-            {playlists.map((playlist) => (
+            {playlists.map((playlist, index) => (
               <Link
                 to={`/playlists/${playlist?.id}`}
                 key={playlist?.id}
-                className="relative text-center p-3 rounded-lg transition-colors duration-300 hover:bg-[#1b191f]">
+                className="relative text-center p-3 rounded-lg transition-colors duration-300 hover:bg-[#1b191f]"
+              >
                 <div className="w-full aspect-square">
-                  <img
+                  <LazyLoadImage
                     src={playlist?.picture_medium}
                     alt={playlist?.title}
+                    effect="blur"
                     className="w-full h-full object-cover rounded-lg transition-transform duration-300 hover:scale-105"
                   />
                 </div>
@@ -165,6 +203,7 @@ const SearchResults = () => {
                 <p className="text-gray-400 text-sm">{playlist?.user?.name}</p>
               </Link>
             ))}
+            <div ref={playlistRef} />
           </div>
         )}
       </div>

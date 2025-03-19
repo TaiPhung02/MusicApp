@@ -61,15 +61,18 @@ export const deezerApi = createApi({
     }),
 
     searchArtists: builder.query({
-      query: ({ query }) => `/search/artist?q=${query}`,
+      query: ({ query, limit = 20, index = 0 }) =>
+        `/search/artist?q=${query}&limit=${limit}&index=${index}`,
     }),
-
+    
     searchAlbums: builder.query({
-      query: ({ query }) => `/search/album?q=${query}`,
+      query: ({ query, limit = 20, index = 0 }) =>
+        `/search/album?q=${query}&limit=${limit}&index=${index}`,
     }),
-
+    
     searchPlaylists: builder.query({
-      query: ({ query }) => `/search/playlist?q=${query}`,
+      query: ({ query, limit = 20, index = 0 }) =>
+        `/search/playlist?q=${query}&limit=${limit}&index=${index}`,
     }),
   }),
 });

@@ -170,9 +170,9 @@ app.get("/api/deezer/search", async (req, res) => {
 
 app.get("/api/deezer/search/artist", async (req, res) => {
   try {
-    const { q, index } = req.query;
+    const { q, limit = 20, index = 0 } = req.query;
     const response = await axios.get(`${DEEZER_API_URL}/search/artist`, {
-      params: { q, index },
+      params: { q, limit, index },
     });
     res.json(response.data);
   } catch (error) {
@@ -182,9 +182,9 @@ app.get("/api/deezer/search/artist", async (req, res) => {
 
 app.get("/api/deezer/search/album", async (req, res) => {
   try {
-    const { q, index } = req.query;
+    const { q, limit = 20, index = 0 } = req.query;
     const response = await axios.get(`${DEEZER_API_URL}/search/album`, {
-      params: { q, index },
+      params: { q, limit, index },
     });
     res.json(response.data);
   } catch (error) {
@@ -194,9 +194,9 @@ app.get("/api/deezer/search/album", async (req, res) => {
 
 app.get("/api/deezer/search/playlist", async (req, res) => {
   try {
-    const { q, index } = req.query;
+    const { q, limit = 20, index = 0 } = req.query;
     const response = await axios.get(`${DEEZER_API_URL}/search/playlist`, {
-      params: { q, index },
+      params: { q, limit, index },
     });
     res.json(response.data);
   } catch (error) {
