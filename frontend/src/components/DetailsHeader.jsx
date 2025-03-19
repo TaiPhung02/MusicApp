@@ -6,11 +6,10 @@ const DetailsHeader = ({ artistId, artistData, songData }) => {
   return (
     <div className="relative w-full flex flex-col mb-8">
       <div className="w-full h-60 sm:h-72 bg-gradient-to-b from-gray-900 via-gray-800 to-black relative rounded-lg">
-        <LazyLoadImage
+        <img
           src={artistId ? artistData?.picture_big : songData?.album?.cover_big}
           alt="background-art"
           className="absolute inset-0 w-full h-full object-cover opacity-20 blur-lg"
-          effect="blur"
         />
       </div>
 

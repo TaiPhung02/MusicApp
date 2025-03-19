@@ -11,6 +11,7 @@ import {
   SongDetails,
   TopPlaylists,
   PlaylistDetails,
+  AlbumDetails,
 } from "./pages";
 
 const App = () => {
@@ -33,6 +34,7 @@ const App = () => {
               <Route path="/songs/:songid" element={<SongDetails />} />
               <Route path="/search/:searchTerm" element={<Search />} />
               <Route path="/playlists/:playlistId" element={<PlaylistDetails />} />
+              <Route path="/albums/:albumId" element={<AlbumDetails />} />
             </Routes>
           </div>
           <div className="xl:sticky relative top-0 h-fit">
