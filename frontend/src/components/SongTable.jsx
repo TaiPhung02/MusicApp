@@ -73,7 +73,7 @@ const SongTable = ({
 
   return (
     <div className="mt-6 overflow-hidden">
-      <div className="grid grid-cols-6 text-gray-400 text-sm pb-2 border-b border-gray-600">
+      <div className="grid grid-cols-6 text-gray-400 text-sm pb-2 border-b border-[#3a393d]">
         <p
           className="col-span-3 cursor-pointer flex items-center gap-2"
           onClick={() => sortTracks("title")}>
@@ -138,7 +138,11 @@ const SongTable = ({
                 />
               </div>
             </div>
-            <p className="truncate">{track.title}</p>
+            <Link
+              to={`/songs/${track.id}`}
+              className="text-gray-300 hover:underline truncate">
+              {track.title}
+            </Link>
           </div>
 
           <Link

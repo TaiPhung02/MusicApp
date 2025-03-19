@@ -20,6 +20,10 @@ const PlaylistCard = forwardRef(({ playlist }, ref) => {
           <p className="font-semibold text-lg text-white truncate text-center">
             {playlist?.title}
           </p>
+          <p className="text-gray-400 text-sm truncate text-center">{playlist?.user?.name}</p>
+          <p className="text-gray-400 text-xs truncate text-center">
+            {playlist?.nb_tracks} tracks
+          </p>
         </div>
       </div>
     </Link>

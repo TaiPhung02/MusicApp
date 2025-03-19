@@ -29,7 +29,7 @@ const Sidebar = () => {
 
   return (
     <>
-      <div className="md:flex hidden flex-col w-[240px] py-10 px-4 bg-[#191624]">
+      <div className="md:flex hidden flex-col w-[240px] py-10 px-4 bg-[#1B191F] border-r border-solid border-[#555257]">
         <LazyLoadImage
           src={logo}
           alt="logo"

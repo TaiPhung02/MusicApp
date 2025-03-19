@@ -12,13 +12,13 @@ import {
   FaEllipsisH,
 } from "react-icons/fa";
 
-const formatDate = (dateString) => {
+export const formatDate = (dateString) => {
   if (!dateString) return "Unknown";
   const date = new Date(dateString);
   return date.toLocaleDateString("en-GB");
 };
 
-const formatTotalDuration = (tracks) => {
+export const formatTotalDuration = (tracks) => {
   if (!tracks || tracks.length === 0) return "0 minutes";
 
   const totalSeconds = tracks.reduce((sum, track) => sum + track.duration, 0);

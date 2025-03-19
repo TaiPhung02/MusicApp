@@ -122,7 +122,7 @@ const SongDetails = () => {
                     <div
                       key={track.id}
                       className="bg-gray-800 p-3 rounded-lg flex items-center gap-3 relative group">
-                      <div className="relative w-16 h-16">
+                      <div className="relative w-14 h-14">
                         <LazyLoadImage
                           src={albumData?.cover_small}
                           alt={track.title}
