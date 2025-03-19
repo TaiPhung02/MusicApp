@@ -33,6 +33,17 @@ const SearchResults = () => {
   const { ref: albumRef, inView: albumInView } = useInView();
   const { ref: playlistRef, inView: playlistInView } = useInView();
 
+  useEffect(() => {
+    setActiveTab("Tracks");
+    setArtists([]);
+    setAlbums([]);
+    setPlaylists([]);
+    setArtistIndex(0);
+    setAlbumIndex(0);
+    setPlaylistIndex(0);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [query]);
+
   const {
     data: tracksData,
     isLoading: tracksLoading,
@@ -84,6 +95,21 @@ const SearchResults = () => {
     return <Error message="Failed to fetch data." />;
 
   const tracks = tracksData?.data || [];
+  const noResults =
+    tracks.length === 0 &&
+    artists.length === 0 &&
+    albums.length === 0 &&
+    playlists.length === 0;
+
+  if (noResults) {
+    return (
+      <div className="px-6 py-4 text-white">
+        <h2 className="text-2xl font-semibold mb-4">
+          No results for "{query}"
+        </h2>
+      </div>
+    );
+  }
 
   const handlePlaySong = (song, index) => {
     dispatch(playPause(true));
@@ -172,7 +198,8 @@ const SearchResults = () => {
                 <Link
                   to={`/artists/${album?.artist?.id}`}
                   className="text-gray-400 text-sm cursor-pointer hover:underline"
-                  onClick={(e) => e.stopPropagation()}>
+                  onClick={(e) => e.stopPropagation()}
+                >
                   {album?.artist?.name}
                 </Link>
               </Link>
