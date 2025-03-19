@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { FaSortUp, FaSortDown, FaSort } from "react-icons/fa";
+import { FaSortUp, FaSortDown, FaSort, FaClock } from "react-icons/fa";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import PlayPause from "./PlayPause";
@@ -16,6 +16,7 @@ const SongTable = ({
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "" });
   const [visibleCount, setVisibleCount] = useState(20);
   const observerRef = useRef();
+  const hasTimeAdd = displayTracks.some((track) => track.time_add);
 
   useEffect(() => {
     setDisplayTracks(tracks.slice(0, visibleCount));
@@ -88,10 +89,18 @@ const SongTable = ({
           onClick={() => sortTracks("album.title")}>
           ALBUM {getSortIcon("album.title")}
         </p>
-        <p
-          className="cursor-pointer flex items-center gap-2"
-          onClick={() => sortTracks("time_add")}>
-          ADDED {getSortIcon("time_add")}
+        <p className="cursor-pointer flex items-center gap-2">
+          {hasTimeAdd ? (
+            <span
+              className="flex items-center gap-2"
+              onClick={() => sortTracks("time_add")}>
+              ADDED {getSortIcon("time_add")}
+            </span>
+          ) : (
+            <span>
+              <FaClock />
+            </span>
+          )}
         </p>
       </div>
 
@@ -99,11 +108,11 @@ const SongTable = ({
         <div
           key={track.id}
           className={`grid grid-cols-6 py-2 text-white rounded-lg px-2 cursor-pointer items-center transition-all duration-300
-          ${
-            isPlaying && activeSong?.title === track.title
-              ? "bg-purple-700 shadow-lg"
-              : "hover:bg-gray-800"
-          }`}
+            ${
+              isPlaying && activeSong?.title === track.title
+                ? "bg-purple-700 shadow-lg"
+                : "hover:bg-gray-800"
+            }`}
           ref={index === displayTracks.length - 1 ? lastTrackRef : null}>
           <div className="flex items-center col-span-3">
             <div className="relative mr-3 w-14 h-14">
@@ -114,9 +123,9 @@ const SongTable = ({
                 effect="blur"
               />
               <div
-                className={`absolute top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 rounded-md transition-opacity duration-300
+                className={`absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 transition-opacity duration-300 
               ${
-                isPlaying && activeSong?.title === track.title
+                activeSong?.title === track.title
                   ? "opacity-100"
                   : "opacity-0 hover:opacity-100"
               }`}>
@@ -129,7 +138,6 @@ const SongTable = ({
                 />
               </div>
             </div>
-
             <p className="truncate">{track.title}</p>
           </div>
 
@@ -146,7 +154,13 @@ const SongTable = ({
           </Link>
 
           <p className="text-gray-400 truncate">
-            {new Date(track.time_add * 1000).toLocaleDateString()}
+            {hasTimeAdd
+              ? track.time_add
+                ? new Date(track.time_add * 1000).toLocaleDateString()
+                : "-"
+              : `${Math.floor(track.duration / 60)}:${(track.duration % 60)
+                  .toString()
+                  .padStart(2, "0")}`}
           </p>
         </div>
       ))}

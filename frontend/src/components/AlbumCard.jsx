@@ -5,8 +5,10 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 
 const AlbumCard = forwardRef(({ album }, ref) => {
   return (
-    <Link to={`/artists/${album?.artist?.id}`} ref={ref}>
-      <div className="flex flex-col w-[250px] p-4 bg-white/5 bg-opacity-80 backdrop-blur-sm animate-slideup rounded-lg cursor-pointer">
+    <div
+      ref={ref}
+      className="flex flex-col w-[250px] p-4 bg-white/5 bg-opacity-80 backdrop-blur-sm animate-slideup rounded-lg cursor-pointer">
+      <Link to={`/albums/${album?.id}`}>
         <div className="relative w-full h-56 group">
           <LazyLoadImage
             src={album?.cover_big}
@@ -15,18 +17,22 @@ const AlbumCard = forwardRef(({ album }, ref) => {
             className="rounded-lg"
           />
         </div>
+      </Link>
 
-        <div className="mt-4 flex flex-col">
+      <div className="mt-4 flex flex-col">
+        <Link to={`/albums/${album?.id}`}>
           <p className="font-semibold text-lg text-white truncate">
             {album.title}
           </p>
+        </Link>
 
-          <p className="hover:underline text-sm truncate text-gray-300 mt-1">
+        <Link to={`/artists/${album?.artist?.id}`}>
+          <p className="text-sm truncate text-gray-300 mt-1 hover:underline">
             {album?.artist?.name}
           </p>
-        </div>
+        </Link>
       </div>
-    </Link>
+    </div>
   );
 });
 
