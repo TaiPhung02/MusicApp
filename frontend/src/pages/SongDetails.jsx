@@ -71,7 +71,6 @@ const SongDetails = () => {
   if (
     isFetchingSongDetails ||
     isFetchingPopularSongs ||
-    isFetchingLyrics ||
     isFetchingAlbum
   ) {
     return <Loader />;
