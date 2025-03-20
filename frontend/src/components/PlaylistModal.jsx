@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { LazyLoadImage } from "react-lazy-load-image-component";
@@ -25,24 +25,29 @@ const PlaylistModal = () => {
     (state) => state.player
   );
   const [isAutoRecommend, setIsAutoRecommend] = useState(true);
+  const [visibleSongs, setVisibleSongs] = useState(10);
+  const observerRef = useRef(null);
 
-  const totalDuration = currentSongs.reduce(
-    (acc, song) => acc + song.duration,
-    0
-  );
-  const totalMinutes = Math.floor(totalDuration / 60);
-  const formattedDuration = `${Math.floor(totalMinutes / 60)} h ${
-    totalMinutes % 60
-  } minutes`;
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setVisibleSongs((prev) => Math.min(prev + 10, currentSongs.length));
+        }
+      },
+      { root: null, rootMargin: "0px", threshold: 1.0 }
+    );
 
-  const handlePlaySong = (song, index) => {
-    dispatch(playPause(true));
-    dispatch(setActiveSong({ song, data: { data: currentSongs }, i: index }));
-  };
+    if (observerRef.current) {
+      observer.observe(observerRef.current);
+    }
 
-  const handlePauseSong = () => {
-    dispatch(playPause(false));
-  };
+    return () => {
+      if (observerRef.current) {
+        observer.unobserve(observerRef.current);
+      }
+    };
+  }, [currentSongs]);
 
   return (
     <AnimatePresence>
@@ -82,44 +87,30 @@ const PlaylistModal = () => {
               </button>
             </div>
           </div>
+
           <div className="lg:w-2/3 w-full flex flex-col p-6 overflow-y-auto">
             <div className="flex justify-between items-center border-b border-gray-600 pb-2 mb-2">
               <div className="text-white text-sm flex items-center justify-center space-x-1">
                 <span>Queue</span>
                 <span className="text-[#A9A6AA]">
-                  • {currentSongs.length} tracks • {formattedDuration}
+                  • {currentSongs.length} tracks
                 </span>
               </div>
-
               <button
                 className="text-white text-2xl"
                 onClick={() => dispatch(closePlaylistModal())}>
                 <MdKeyboardArrowDown size={28} />
               </button>
             </div>
-            <div className="flex justify-end mb-4">
-              <label className="flex items-center space-x-2 text-white cursor-pointer">
-                <span>Automated recommendations</span>
-                <div
-                  className={`relative w-12 h-6 rounded-full transition duration-300 ${
-                    isAutoRecommend ? "bg-purple-500" : "bg-gray-500"
-                  }`}
-                  onClick={() => setIsAutoRecommend(!isAutoRecommend)}>
-                  <div
-                    className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full shadow-md transform transition-all duration-300 ${
-                      isAutoRecommend ? "translate-x-6" : "translate-x-0"
-                    }`}></div>
-                </div>
-              </label>
-            </div>
+
             <div>
-              {currentSongs.map((song, index) => (
+              {currentSongs.slice(0, visibleSongs).map((song, index) => (
                 <div
                   key={song.id}
-                  className={`flex items-center justify-between p-2 rounded-lg hover:bg-[#2a2830] ${
+                  className={`flex items-center justify-between p-2 rounded-lg transition duration-300 ${
                     isPlaying && activeSong?.id === song.id
                       ? "bg-[#505050] shadow-lg"
-                      : "hover:bg-[#1b191f]"
+                      : "hover:bg-[#2a2830]"
                   }`}>
                   <div className="flex items-center space-x-3">
                     <div className="relative w-14 h-14 rounded-md">
@@ -139,13 +130,21 @@ const PlaylistModal = () => {
                           isPlaying={isPlaying && activeSong?.id === song.id}
                           activeSong={activeSong}
                           song={song}
-                          handlePlay={() => handlePlaySong(song, index)}
-                          handlePause={handlePauseSong}
+                          handlePlay={() =>
+                            dispatch(
+                              setActiveSong({
+                                song,
+                                data: { data: currentSongs },
+                                i: index,
+                              })
+                            )
+                          }
+                          handlePause={() => dispatch(playPause(false))}
                         />
                       </div>
                     </div>
                     <div>
-                      <p className={`text-white`}>
+                      <p className="text-white">
                         <Link to={`/songs/${song.id}`}>{song.title}</Link>
                       </p>
                       <p className="text-gray-400 text-sm">
@@ -176,6 +175,13 @@ const PlaylistModal = () => {
                 </div>
               ))}
             </div>
+
+            {/* Observer Target */}
+            {visibleSongs < currentSongs.length && (
+              <div ref={observerRef} className="text-center text-gray-400 mt-4">
+                Loading more songs...
+              </div>
+            )}
           </div>
         </motion.div>
       )}
