@@ -50,6 +50,10 @@ const SongDetails = () => {
     skip: !songData?.album?.id,
   });
 
+  const uniqueTracks = Array.from(
+    new Map(albumData?.tracks?.data.map((track) => [track.title, track])).values()
+  );
+  
   const handlePauseClick = () => {
     dispatch(playPause(false));
   };
@@ -113,7 +117,7 @@ const SongDetails = () => {
             <div>
               <h3 className="text-white text-xl font-semibold mb-2">Tracks:</h3>
               <div className="grid grid-cols-1 gap-4">
-                {albumData?.tracks?.data.map((track, i) => {
+                {uniqueTracks.map((track, i) => {
                   const isCurrentSong = activeSong?.id === track.id;
                   const durationMinutes = Math.floor(track.duration / 60);
                   const durationSeconds = track.duration % 60;

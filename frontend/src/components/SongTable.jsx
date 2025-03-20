@@ -19,7 +19,10 @@ const SongTable = ({
   const hasTimeAdd = displayTracks.some((track) => track.time_add);
 
   useEffect(() => {
-    setDisplayTracks(tracks.slice(0, visibleCount));
+    const uniqueTracks = Array.from(
+      new Map(tracks.map((track) => [track.title, track])).values()
+    );
+    setDisplayTracks(uniqueTracks.slice(0, visibleCount));
   }, [tracks, visibleCount]);
 
   const lastTrackRef = useCallback((node) => {
@@ -109,7 +112,7 @@ const SongTable = ({
           key={track.id}
           className={`grid grid-cols-6 py-2 text-white rounded-lg px-2 cursor-pointer items-center transition-all duration-300
             ${
-              isPlaying && activeSong?.title === track.title
+              isPlaying && activeSong?.id === track.id
                 ? "bg-[#505050] shadow-lg"
                 : "hover:bg-[#1b191f]"
             }`}
@@ -125,12 +128,12 @@ const SongTable = ({
               <div
                 className={`absolute inset-0 rounded-md flex items-center justify-center bg-black bg-opacity-50 transition-opacity duration-300 
               ${
-                activeSong?.title === track.title
+                activeSong?.id === track.id
                   ? "opacity-100"
                   : "opacity-0 hover:opacity-100"
               }`}>
                 <PlayPause
-                  isPlaying={isPlaying && activeSong?.title === track.title}
+                  isPlaying={isPlaying && activeSong?.id === track.id}
                   activeSong={activeSong}
                   song={track}
                   handlePlay={() => handlePlaySong(track, index)}

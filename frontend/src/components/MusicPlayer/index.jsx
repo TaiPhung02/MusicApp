@@ -6,7 +6,7 @@ import {
   BsVolumeDownFill,
   BsFillVolumeMuteFill,
 } from "react-icons/bs";
-import { MdPlaylistPlay, MdCast, MdTune } from "react-icons/md"; // Icon Playlist, Chromecast, Adjust
+import { MdPlaylistPlay, MdCast, MdTune } from "react-icons/md";
 import { searchYouTube } from "../../api/youtube";
 import {
   nextSong,
@@ -48,7 +48,7 @@ const MusicPlayer = () => {
   const handleMouseLeave = () => {
     hideTimeout = setTimeout(() => {
       setShowVolume(false);
-    }, 500);
+    }, 100);
   };
 
   useEffect(() => {
@@ -93,7 +93,7 @@ const MusicPlayer = () => {
 
   return (
     <div className="relative sm:px-12 px-8 w-full flex items-center justify-between">
-      {/* Phần 1: Track */}
+      {/* Track */}
       <div className="flex-1 flex justify-start">
         <Track
           isPlaying={isPlaying}
@@ -102,8 +102,8 @@ const MusicPlayer = () => {
         />
       </div>
 
-      {/* Phần 2: Controls + Seekbar + Player (luôn ở giữa) */}
-      <div className="absolute left-1/2 transform -translate-x-1/2 flex flex-col items-center">
+      {/* Controls + Seekbar + Player */}
+      <div className="absolute left-3/4 sm:left-1/2 transform -translate-x-1/2 flex flex-col items-center">
         <Controls
           isPlaying={isPlaying}
           isActive={isActive}
@@ -137,20 +137,23 @@ const MusicPlayer = () => {
         />
       </div>
 
-      {/* Phần 3: Playlist, Chromecast, Volume, Adjust */}
-      <div className="flex-1 flex justify-end items-center space-x-4">
+      {/* Playlist, Chromecast, Volume, Adjust */}
+      <div className="flex-1 hidden sm:flex justify-end items-center sm:space-x-4 space-x-2">
         {/* Playlist Icon */}
-        <MdPlaylistPlay size={25} color="#FFF" />
+        <div className="group p-2 rounded-full hover:bg-[#3a393d] transition cursor-pointer">
+          <MdPlaylistPlay size={25} color="#FFF" />
+        </div>
 
         {/* Chromecast Icon */}
-        <MdCast size={25} color="#FFF" />
+        <div className="group p-2 rounded-full hover:bg-[#3a393d] transition cursor-pointer">
+          <MdCast size={25} color="#FFF" />
+        </div>
 
         {/* Volume Section */}
         <div
-          className="relative flex items-center"
+          className="relative flex items-center group p-2 rounded-full hover:bg-[#3a393d] transition cursor-pointer"
           onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-        >
+          onMouseLeave={handleMouseLeave}>
           {volume > 0.5 ? (
             <BsFillVolumeUpFill
               size={25}
@@ -172,7 +175,7 @@ const MusicPlayer = () => {
           )}
 
           {showVolume && (
-            <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 bg-gray-900 p-2 rounded-lg shadow-lg">
+            <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 bg-[#3a393d] p-2 rounded-lg shadow-lg">
               <VolumeBar
                 value={volume}
                 min="0"
@@ -185,7 +188,9 @@ const MusicPlayer = () => {
         </div>
 
         {/* Adjust Icon */}
-        <MdTune size={25} color="#FFF" />
+        <div className="group p-2 rounded-full hover:bg-[#3a393d] transition cursor-pointer">
+          <MdTune size={25} color="#FFF" />
+        </div>
       </div>
     </div>
   );

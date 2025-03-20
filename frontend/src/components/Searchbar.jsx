@@ -1,8 +1,7 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiSearch } from "react-icons/fi";
 import { IoClose, IoTrash } from "react-icons/io5";
-import _ from "lodash";
 
 const Searchbar = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -10,33 +9,17 @@ const Searchbar = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const navigate = useNavigate();
 
-  // Load history resentSearch when component mount
+  // Load history recentSearch when component mount
   useEffect(() => {
     const storedSearches =
       JSON.parse(localStorage.getItem("recentSearches")) || [];
     setRecentSearches(storedSearches);
   }, []);
 
-  // Debounce
-  const debouncedSearch = useCallback(
-    _.debounce((query) => {
-      if (query.trim()) {
-        navigate(`/search/${query.trim()}`);
-      }
-    }, 500),
-    [navigate]
-  );
-
   const handleChange = (e) => {
     setSearchTerm(e.target.value);
     setShowDropdown(true);
   };
-
-  useEffect(() => {
-    if (searchTerm) {
-      debouncedSearch(searchTerm);
-    }
-  }, [searchTerm, debouncedSearch]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

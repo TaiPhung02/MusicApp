@@ -95,8 +95,12 @@ const SearchResults = () => {
     return <Error message="Failed to fetch data." />;
 
   const tracks = tracksData?.data || [];
+  const uniqueTracks = Array.from(
+    new Map(tracks.map((track) => [track.title, track])).values()
+  );
+
   const noResults =
-    tracks.length === 0 &&
+    uniqueTracks.length === 0 &&
     artists.length === 0 &&
     albums.length === 0 &&
     playlists.length === 0;
@@ -113,7 +117,7 @@ const SearchResults = () => {
 
   const handlePlaySong = (song, index) => {
     dispatch(playPause(true));
-    dispatch(setActiveSong({ song, data: { data: tracks }, i: index }));
+    dispatch(setActiveSong({ song, data: { data: uniqueTracks }, i: index }));
   };
 
   const handlePauseSong = () => {
@@ -142,7 +146,7 @@ const SearchResults = () => {
       <div>
         {activeTab === "Tracks" && (
           <SongTable
-            tracks={tracks}
+            tracks={uniqueTracks}
             handlePlaySong={handlePlaySong}
             handlePauseSong={handlePauseSong}
             activeSong={activeSong}
