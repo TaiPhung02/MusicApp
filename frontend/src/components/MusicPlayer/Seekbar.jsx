@@ -19,7 +19,7 @@ const Seekbar = ({ value, min, max, onInput, setSeekTime, appTime }) => {
       <button
         type="button"
         onClick={() => setSeekTime(appTime - 5)}
-        className="hidden lg:block text-white mr-3 hover:scale-110 transition">
+        className="hidden lg:block text-white mr-3">
         -
       </button>
 
@@ -62,7 +62,7 @@ const Seekbar = ({ value, min, max, onInput, setSeekTime, appTime }) => {
       <button
         type="button"
         onClick={() => setSeekTime(appTime + 5)}
-        className="hidden lg:block text-white ml-3 hover:scale-110 transition">
+        className="hidden lg:block text-white ml-3">
         +
       </button>
     </div>
