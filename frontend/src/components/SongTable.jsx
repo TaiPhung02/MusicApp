@@ -76,7 +76,7 @@ const SongTable = ({
 
   return (
     <div className="mt-6 overflow-hidden">
-      <div className="grid grid-cols-6 text-gray-400 text-sm pb-2 border-b border-[#3a393d]">
+      <div className="grid grid-cols-6 text-gray-400 text-sm pb-2 border-b border-[#3a393d] mb-2">
         <p
           className="col-span-3 cursor-pointer flex items-center gap-2"
           onClick={() => sortTracks("title")}>
