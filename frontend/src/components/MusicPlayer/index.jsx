@@ -37,6 +37,7 @@ const MusicPlayer = () => {
   const [repeat, setRepeat] = useState(false);
   const [shuffle, setShuffle] = useState(false);
   const [showVolume, setShowVolume] = useState(false);
+  const [castSession, setCastSession] = useState(null);
   const dispatch = useDispatch();
 
   let hideTimeout;
@@ -91,6 +92,55 @@ const MusicPlayer = () => {
       });
     }
   }, [activeSong]);
+
+  const handleCast = () => {
+    if (!window.chrome || !window.chrome.cast) {
+      alert("Chromecast is not available");
+      return;
+    }
+
+    const sessionRequest = new window.chrome.cast.SessionRequest(
+      window.chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID
+    );
+    const apiConfig = new window.chrome.cast.ApiConfig(
+      sessionRequest,
+      (session) => setCastSession(session),
+      () => {}
+    );
+
+    window.chrome.cast.initialize(
+      apiConfig,
+      () => {
+        window.chrome.cast.requestSession(
+          async (session) => {
+            setCastSession(session);
+
+            const mediaItems = await Promise.all(
+              currentSongs.map(async (song) => {
+                const url = await searchYouTube(song.title, song.artist?.name);
+                return new window.chrome.cast.media.MediaInfo(url, "video/mp4");
+              })
+            );
+
+            const queueItems = mediaItems.map(
+              (mediaInfo, index) =>
+                new window.chrome.cast.media.QueueItem(mediaInfo)
+            );
+
+            const request = new window.chrome.cast.media.LoadRequest(
+              queueItems[0]
+            );
+            request.queueData = new window.chrome.cast.media.QueueData();
+            request.queueData.items = queueItems;
+
+            session.loadMedia(request);
+          },
+          (error) => console.error(error)
+        );
+      },
+      (error) => console.error(error)
+    );
+  };
 
   return (
     <div className="relative sm:px-12 px-8 w-full flex items-center justify-between">
@@ -148,7 +198,9 @@ const MusicPlayer = () => {
         </div>
 
         {/* Chromecast Icon */}
-        <div className="group p-2 rounded-full hover:bg-[#3a393d] transition cursor-pointer">
+        <div
+          className="group p-2 rounded-full hover:bg-[#3a393d] transition cursor-pointer"
+          onClick={handleCast}>
           <MdCast size={25} color="#FFF" />
         </div>
 
