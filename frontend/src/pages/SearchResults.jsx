@@ -129,13 +129,12 @@ const SearchResults = () => {
         {TABS.map((tab) => (
           <button
             key={tab}
-            className={`py-2 text-lg ${
+            className={`py-2 text-lg border-b-2 border-transparent hover:border-[#a9a6aa] ${
               activeTab === tab
-                ? "border-b-2 border-purple-500 text-white"
+                ? "border-b-2 border-purple-500 hover:border-purple-500 text-white"
                 : "text-gray-400"
             }`}
-            onClick={() => setActiveTab(tab)}
-          >
+            onClick={() => setActiveTab(tab)}>
             {tab}
           </button>
         ))}
@@ -156,8 +155,7 @@ const SearchResults = () => {
               <Link
                 to={`/artists/${artist?.id}`}
                 key={artist?.id}
-                className="relative text-center p-3 rounded-lg transition-all duration-300 hover:bg-[#1b191f] hover:scale-105"
-              >
+                className="relative text-center p-3 rounded-lg transition-all duration-300 hover:bg-[#1b191f] hover:scale-105">
                 <div className="w-full aspect-square">
                   <LazyLoadImage
                     src={artist?.picture_big}
@@ -182,8 +180,7 @@ const SearchResults = () => {
               <Link
                 to={`/albums/${album?.id}`}
                 key={album?.id}
-                className="relative text-center p-3 rounded-lg transition-all duration-300 hover:bg-[#1b191f] hover:scale-105"
-              >
+                className="relative text-center p-3 rounded-lg transition-all duration-300 hover:bg-[#1b191f] hover:scale-105">
                 <div className="w-full aspect-square">
                   <LazyLoadImage
                     src={album?.cover_medium}
@@ -198,8 +195,7 @@ const SearchResults = () => {
                 <Link
                   to={`/artists/${album?.artist?.id}`}
                   className="text-gray-400 text-sm cursor-pointer hover:underline"
-                  onClick={(e) => e.stopPropagation()}
-                >
+                  onClick={(e) => e.stopPropagation()}>
                   {album?.artist?.name}
                 </Link>
               </Link>
@@ -214,8 +210,7 @@ const SearchResults = () => {
               <Link
                 to={`/playlists/${playlist?.id}`}
                 key={playlist?.id}
-                className="relative text-center p-3 rounded-lg transition-colors duration-300 hover:bg-[#1b191f]"
-              >
+                className="relative text-center p-3 rounded-lg transition-colors duration-300 hover:bg-[#1b191f]">
                 <div className="w-full aspect-square">
                   <LazyLoadImage
                     src={playlist?.picture_medium}

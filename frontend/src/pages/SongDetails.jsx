@@ -121,12 +121,12 @@ const SongDetails = () => {
                   return (
                     <div
                       key={track.id}
-                      className="bg-gray-800 p-3 rounded-lg flex items-center gap-3 relative group">
+                      className="bg-gray-800 p-3 rounded-md flex items-center gap-3 relative group">
                       <div className="relative w-14 h-14">
                         <LazyLoadImage
                           src={albumData?.cover_small}
                           alt={track.title}
-                          className="w-full h-full rounded-lg"
+                          className="w-full h-full rounded-md"
                           effect="blur"
                         />
                         <button
@@ -135,7 +135,7 @@ const SongDetails = () => {
                               ? handlePauseClick()
                               : handlePlayFromAlbum(track, i)
                           }
-                          className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          className="absolute inset-0 rounded-md flex items-center justify-center bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                           {isCurrentSong && isPlaying ? (
                             <FaPause size={20} className="text-white" />
                           ) : (
