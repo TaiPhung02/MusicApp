@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
 
-import { Searchbar, Sidebar, MusicPlayer, TopPlay, Header } from "./components";
+import { Searchbar, Sidebar, MusicPlayer, TopPlay, Header, PlaylistModal } from "./components";
 import {
   ArtistDetails,
   TopArtists,
@@ -52,6 +52,8 @@ const App = () => {
           <MusicPlayer />
         </div>
       )}
+
+      <PlaylistModal />
     </div>
   );
 };

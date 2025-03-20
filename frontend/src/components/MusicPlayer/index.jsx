@@ -13,6 +13,7 @@ import {
   prevSong,
   playPause,
   setYoutubeUrl,
+  openPlaylistModal,
 } from "../../redux/features/playerSlice";
 import Controls from "./Controls";
 import Player from "./Player";
@@ -140,7 +141,9 @@ const MusicPlayer = () => {
       {/* Playlist, Chromecast, Volume, Adjust */}
       <div className="flex-1 hidden sm:flex justify-end items-center sm:space-x-4 space-x-2">
         {/* Playlist Icon */}
-        <div className="group p-2 rounded-full hover:bg-[#3a393d] transition cursor-pointer">
+        <div
+          className="group p-2 rounded-full hover:bg-[#3a393d] transition cursor-pointer"
+          onClick={() => dispatch(openPlaylistModal())}>
           <MdPlaylistPlay size={25} color="#FFF" />
         </div>
 

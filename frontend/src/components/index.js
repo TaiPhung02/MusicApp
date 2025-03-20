@@ -13,6 +13,7 @@ import SongBar from './SongBar';
 import RelatedSongs from './RelatedSongs';
 import PopularSongs from './PopularSongs';
 import MusicPlayer from './MusicPlayer';
+import PlaylistModal from './PlaylistModal';
 import Loader from './Loader';
 import Error from './Error';
 
@@ -24,6 +25,7 @@ export {
   AlbumCard,
   ArtistCard,
   PlaylistCard,
+  PlaylistModal,
   SongTable,
   Searchbar,
   User,
