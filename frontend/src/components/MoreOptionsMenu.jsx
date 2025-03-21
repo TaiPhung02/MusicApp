@@ -1,5 +1,6 @@
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
+import { useDispatch } from "react-redux";
 import {
   MdPlaylistAdd,
   MdFavorite,
@@ -8,9 +9,16 @@ import {
   MdShare,
   MdMoreHoriz,
 } from "react-icons/md";
+import { addNextSongToQueue } from "../redux/features/playerSlice";
 
-const MoreOptionsMenu = () => {
+const MoreOptionsMenu = (song) => {
   const [isOpen, setIsOpen] = useState(false);
+  const dispatch = useDispatch();
+
+  const handleAddNext = () => {
+    dispatch(addNextSongToQueue(song));
+    setIsOpen(false);
+  };
 
   return (
     <Menu as="div" className="relative inline-block text-left">
@@ -36,6 +44,7 @@ const MoreOptionsMenu = () => {
             <Menu.Item>
               {({ active }) => (
                 <button
+                  onClick={handleAddNext}
                   className={`${
                     active ? "bg-[#2a2830]" : ""
                   } flex items-center text-md text-white w-full px-3 py-2 rounded-md`}>

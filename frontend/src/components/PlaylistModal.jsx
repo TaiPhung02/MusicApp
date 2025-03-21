@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import {
   MdFavorite,
-  MdMoreHoriz,
   MdClose,
   MdPlaylistAdd,
   MdKeyboardArrowDown,
@@ -25,29 +24,28 @@ const PlaylistModal = () => {
   const { currentSongs, activeSong, isPlaylistOpen, isPlaying } = useSelector(
     (state) => state.player
   );
+
   const [visibleSongs, setVisibleSongs] = useState(10);
   const observerRef = useRef(null);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          setVisibleSongs((prev) => Math.min(prev + 10, currentSongs.length));
-        }
-      },
-      { root: null, rootMargin: "0px", threshold: 1.0 }
-    );
+  const lastElementRef = useCallback(
+    (node) => {
+      if (!node) return;
+      if (observerRef.current) observerRef.current.disconnect();
 
-    if (observerRef.current) {
-      observer.observe(observerRef.current);
-    }
+      observerRef.current = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            setVisibleSongs((prev) => Math.min(prev + 10, currentSongs.length));
+          }
+        },
+        { root: null, rootMargin: "100px", threshold: 0.1 }
+      );
 
-    return () => {
-      if (observerRef.current) {
-        observer.unobserve(observerRef.current);
-      }
-    };
-  }, [currentSongs]);
+      observerRef.current.observe(node);
+    },
+    [currentSongs]
+  );
 
   return (
     <AnimatePresence>
@@ -88,7 +86,7 @@ const PlaylistModal = () => {
             </div>
           </div>
 
-          <div className="lg:w-2/3 w-full flex flex-col p-6 overflow-y-auto">
+          <div className="lg:w-2/3 w-full flex flex-col p-6 pb-32 overflow-y-auto">
             <div className="flex justify-between items-center border-b border-gray-600 pb-2 mb-2">
               <div className="text-white text-sm flex items-center justify-center space-x-1">
                 <span>Queue</span>
@@ -161,7 +159,7 @@ const PlaylistModal = () => {
                       <MdFavorite size={20} color="#FFF" />
                     </button>
                     <button>
-                      <MoreOptionsMenu />
+                      <MoreOptionsMenu song={song} />
                     </button>
                     <span className="text-gray-400 text-sm">
                       {Math.floor(song.duration / 60)}:
@@ -178,7 +176,9 @@ const PlaylistModal = () => {
 
             {/* Observer Target */}
             {visibleSongs < currentSongs.length && (
-              <div ref={observerRef} className="text-center text-gray-400 mt-4">
+              <div
+                ref={lastElementRef}
+                className="text-center text-gray-400 mt-4">
                 Loading more songs...
               </div>
             )}
