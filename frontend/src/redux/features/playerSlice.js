@@ -9,6 +9,7 @@ const initialState = {
   genreListId: "",
   youtubeUrl: null,
   isPlaylistOpen: false,
+  isShuffle: false,
 };
 
 const playerSlice = createSlice({
@@ -34,19 +35,41 @@ const playerSlice = createSlice({
     },
 
     nextSong: (state) => {
-      if (state.currentIndex < state.currentSongs.length - 1) {
-        state.currentIndex += 1;
-        state.activeSong = state.currentSongs[state.currentIndex];
-        state.isActive = true;
+      if (state.isShuffle) {
+        const randomIndex = Math.floor(
+          Math.random() * state.currentSongs.length
+        );
+        state.currentIndex = randomIndex;
+      } else {
+        if (state.currentIndex < state.currentSongs.length - 1) {
+          state.currentIndex += 1;
+        } else {
+          state.currentIndex = 0;
+        }
       }
+      state.activeSong = state.currentSongs[state.currentIndex];
+      state.isActive = true;
     },
 
     prevSong: (state) => {
-      if (state.currentIndex > 0) {
-        state.currentIndex -= 1;
-        state.activeSong = state.currentSongs[state.currentIndex];
-        state.isActive = true;
+      if (state.isShuffle) {
+        const randomIndex = Math.floor(
+          Math.random() * state.currentSongs.length
+        );
+        state.currentIndex = randomIndex;
+      } else {
+        if (state.currentIndex > 0) {
+          state.currentIndex -= 1;
+        } else {
+          state.currentIndex = state.currentSongs.length - 1;
+        }
       }
+      state.activeSong = state.currentSongs[state.currentIndex];
+      state.isActive = true;
+    },
+
+    toggleShuffle: (state) => {
+      state.isShuffle = !state.isShuffle;
     },
 
     playPause: (state, action) => {
@@ -81,6 +104,7 @@ export const {
   setActiveSong,
   nextSong,
   prevSong,
+  toggleShuffle,
   playPause,
   selectGenreListId,
   setYoutubeUrl,

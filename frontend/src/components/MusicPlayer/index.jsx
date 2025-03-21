@@ -29,13 +29,13 @@ const MusicPlayer = () => {
     isActive,
     isPlaying,
     youtubeUrl,
+    isShuffle,
   } = useSelector((state) => state.player);
   const [duration, setDuration] = useState(0);
   const [seekTime, setSeekTime] = useState(0);
   const [appTime, setAppTime] = useState(0);
   const [volume, setVolume] = useState(0.3);
   const [repeat, setRepeat] = useState(false);
-  const [shuffle, setShuffle] = useState(false);
   const [showVolume, setShowVolume] = useState(false);
   const [castSession, setCastSession] = useState(null);
   const dispatch = useDispatch();
@@ -64,25 +64,11 @@ const MusicPlayer = () => {
 
   const handleNextSong = () => {
     dispatch(playPause(false));
-    dispatch(
-      nextSong(
-        shuffle
-          ? Math.floor(Math.random() * currentSongs.length)
-          : (currentIndex + 1) % currentSongs.length
-      )
-    );
+    dispatch(nextSong());
   };
 
   const handlePrevSong = () => {
-    dispatch(
-      prevSong(
-        shuffle
-          ? Math.floor(Math.random() * currentSongs.length)
-          : currentIndex === 0
-          ? currentSongs.length - 1
-          : currentIndex - 1
-      )
-    );
+    dispatch(prevSong());
   };
 
   useEffect(() => {
@@ -160,8 +146,6 @@ const MusicPlayer = () => {
           isActive={isActive}
           repeat={repeat}
           setRepeat={setRepeat}
-          shuffle={shuffle}
-          setShuffle={setShuffle}
           currentSongs={currentSongs}
           handlePlayPause={handlePlayPause}
           handlePrevSong={handlePrevSong}
