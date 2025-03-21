@@ -1,6 +1,7 @@
 import Sidebar from './Sidebar';
 import Searchbar from './Searchbar';
 import User from './User';
+import Notification from './Notification';
 import SongCard from './SongCard';
 import AlbumCard from './AlbumCard';
 import ArtistCard from './ArtistCard';
@@ -29,6 +30,7 @@ export {
   SongTable,
   Searchbar,
   User,
+  Notification,
   DetailsHeader,
   SongBar,
   RelatedSongs,
