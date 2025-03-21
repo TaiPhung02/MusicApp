@@ -92,7 +92,7 @@ const SongTable = ({
           onClick={() => sortTracks("album.title")}>
           ALBUM {getSortIcon("album.title")}
         </p>
-        <p className="cursor-pointer flex items-center gap-2">
+        <p className="cursor-pointer flex items-center justify-center pr-2 gap-2">
           {hasTimeAdd ? (
             <span
               className="flex items-center gap-2"
@@ -116,7 +116,8 @@ const SongTable = ({
                 ? "bg-[#505050] shadow-lg"
                 : "hover:bg-[#1b191f]"
             }`}
-          ref={index === displayTracks.length - 1 ? lastTrackRef : null}>
+          ref={index === displayTracks.length - 1 ? lastTrackRef : null}
+          onClick={() => handlePlaySong(track, index)}>
           <div className="flex items-center col-span-3">
             <div className="relative mr-3 w-14 h-14 rounded-md">
               <LazyLoadImage
@@ -136,8 +137,14 @@ const SongTable = ({
                   isPlaying={isPlaying && activeSong?.id === track.id}
                   activeSong={activeSong}
                   song={track}
-                  handlePlay={() => handlePlaySong(track, index)}
-                  handlePause={handlePauseSong}
+                  handlePlay={(e) => {
+                    e.stopPropagation();
+                    handlePlaySong(track, index);
+                  }}
+                  handlePause={(e) => {
+                    e.stopPropagation();
+                    handlePauseSong();
+                  }}
                 />
               </div>
             </div>
@@ -160,7 +167,7 @@ const SongTable = ({
             {track.album.title}
           </Link>
 
-          <p className="text-gray-400 truncate">
+          <p className="text-gray-400 truncate text-center">
             {hasTimeAdd
               ? track.time_add
                 ? new Date(track.time_add * 1000).toLocaleDateString()
