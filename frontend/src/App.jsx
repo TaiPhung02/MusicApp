@@ -1,7 +1,16 @@
 import { useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-import { Searchbar, Sidebar, MusicPlayer, TopPlay, Header, PlaylistModal } from "./components";
+import {
+  Searchbar,
+  Sidebar,
+  MusicPlayer,
+  TopPlay,
+  Header,
+  PlaylistModal,
+} from "./components";
 import {
   ArtistDetails,
   TopArtists,
@@ -19,6 +28,7 @@ const App = () => {
 
   return (
     <div className="relative flex">
+      <ToastContainer />
       <Sidebar />
       <div className="flex-1 flex flex-col bg-[#0F0D13]">
         <Header />

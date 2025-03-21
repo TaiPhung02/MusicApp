@@ -1,6 +1,6 @@
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   MdPlaylistAdd,
   MdFavorite,
@@ -10,13 +10,29 @@ import {
   MdMoreHoriz,
 } from "react-icons/md";
 import { addNextSongToQueue } from "../redux/features/playerSlice";
+import { toast } from "react-toastify";
 
-const MoreOptionsMenu = (song) => {
+const MoreOptionsMenu = ({ song }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
+  const currentSongs = useSelector((state) => state.player.currentSongs);
 
   const handleAddNext = () => {
-    dispatch(addNextSongToQueue(song));
+    const isAlreadyInQueue = currentSongs.some((track) => track.id === song.id);
+
+    if (isAlreadyInQueue) {
+      toast.warn("Track already exists in queue", {
+        position: "top-right",
+        autoClose: 2000,
+      });
+    } else {
+      dispatch(addNextSongToQueue({ song }));
+      toast.success("Added to queue", {
+        position: "top-right",
+        autoClose: 1500,
+      });
+    }
+
     setIsOpen(false);
   };
 

@@ -94,21 +94,14 @@ const playerSlice = createSlice({
 
     addNextSongToQueue: (state, action) => {
       const { song } = action.payload;
-
       if (!song || !song.id) return;
 
       const currentIndex = state.currentIndex;
 
-      const isAlreadyInQueue = state.currentSongs.some(
-        (track) => track.id === song.id
-      );
-
-      if (!isAlreadyInQueue) {
-        if (currentIndex < state.currentSongs.length - 1) {
-          state.currentSongs.splice(currentIndex + 1, 0, song);
-        } else {
-          state.currentSongs.push(song);
-        }
+      if (currentIndex < state.currentSongs.length - 1) {
+        state.currentSongs.splice(currentIndex + 1, 0, song);
+      } else {
+        state.currentSongs.push(song);
       }
     },
 
