@@ -7,6 +7,7 @@ import AlbumCard from './AlbumCard';
 import ArtistCard from './ArtistCard';
 import SongTable from './SongTable';
 import PlaylistCard from './PlaylistCard';
+import MoreOptionsMenu from './MoreOptionsMenu';
 import TopPlay from './TopPlay';
 import Header from './Header';
 import DetailsHeader from './DetailsHeader';
@@ -26,6 +27,7 @@ export {
   AlbumCard,
   ArtistCard,
   PlaylistCard,
+  MoreOptionsMenu,
   PlaylistModal,
   SongTable,
   Searchbar,

@@ -18,13 +18,13 @@ import {
 } from "../redux/features/playerSlice";
 import PlayPause from "./PlayPause";
 import { motion, AnimatePresence } from "framer-motion";
+import MoreOptionsMenu from "./MoreOptionsMenu";
 
 const PlaylistModal = () => {
   const dispatch = useDispatch();
   const { currentSongs, activeSong, isPlaylistOpen, isPlaying } = useSelector(
     (state) => state.player
   );
-  const [isAutoRecommend, setIsAutoRecommend] = useState(true);
   const [visibleSongs, setVisibleSongs] = useState(10);
   const observerRef = useRef(null);
 
@@ -83,7 +83,7 @@ const PlaylistModal = () => {
                 <MdFavorite size={24} color="#FFF" />
               </button>
               <button>
-                <MdMoreHoriz size={24} color="#FFF" />
+                <MoreOptionsMenu />
               </button>
             </div>
           </div>
@@ -161,7 +161,7 @@ const PlaylistModal = () => {
                       <MdFavorite size={20} color="#FFF" />
                     </button>
                     <button>
-                      <MdMoreHoriz size={20} color="#FFF" />
+                      <MoreOptionsMenu />
                     </button>
                     <span className="text-gray-400 text-sm">
                       {Math.floor(song.duration / 60)}:
