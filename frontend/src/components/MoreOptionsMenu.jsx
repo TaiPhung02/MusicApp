@@ -11,6 +11,7 @@ import {
 import { toast } from "react-toastify";
 import {
   addNextSongToQueue,
+  removeSongFromQueue,
 } from "../redux/features/playerSlice";
 import AddToPlaylistMenu from "./AddToPlaylistMenu";
 
@@ -76,7 +77,9 @@ const MoreOptionsMenu = ({ song }) => {
             <MdShare className="mr-3" /> Share
           </button>
 
-          <button className="flex items-center text-md w-full px-3 py-2 rounded-md text-gray-400 hover:bg-red-600 hover:text-white">
+          <button
+            onClick={() => dispatch(removeSongFromQueue(song.id))}
+            className="flex items-center text-md w-full px-3 py-2 rounded-md text-gray-400 hover:bg-red-600 hover:text-white">
             <MdClose className="mr-3" /> Remove from queue
           </button>
         </div>
