@@ -28,7 +28,7 @@ const NavLinks = ({ handleClick, showFavourites, showPlaylist }) => (
 
     {showFavourites && (
       <NavLink
-        to="/favourites"
+        to="/my-favourites"
         className={({ isActive }) =>
           `flex flex-row items-center my-8 text-sm font-medium transition-colors
           ${isActive ? "text-red-400" : "text-gray-400"} hover:text-red-400`
@@ -41,7 +41,7 @@ const NavLinks = ({ handleClick, showFavourites, showPlaylist }) => (
 
     {showPlaylist && (
       <NavLink
-        to="/playlist"
+        to="/my-playlist"
         className={({ isActive }) =>
           `flex flex-row items-center my-8 text-sm font-medium transition-colors
           ${isActive ? "text-blue-400" : "text-gray-400"} hover:text-blue-400`

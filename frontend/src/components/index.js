@@ -7,6 +7,7 @@ import AlbumCard from "./AlbumCard";
 import ArtistCard from "./ArtistCard";
 import SongTable from "./SongTable";
 import PlaylistCard from "./PlaylistCard";
+import MyPlaylistCard from "./MyPlaylistCard";
 import MoreOptionsMenu from "./MoreOptionsMenu";
 import AddToPlaylistMenu from "./AddToPlaylistMenu";
 import TopPlay from "./TopPlay";
@@ -28,6 +29,7 @@ export {
   AlbumCard,
   ArtistCard,
   PlaylistCard,
+  MyPlaylistCard,
   MoreOptionsMenu,
   AddToPlaylistMenu,
   PlaylistModal,

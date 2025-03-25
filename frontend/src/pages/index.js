@@ -3,6 +3,9 @@ import TopArtists from './TopArtists';
 import ArtistDetails from './ArtistDetails';
 import SongDetails from './SongDetails';
 import PlaylistDetails from './PlaylistDetails';
+import MyFavourites from './MyFavourites';
+import MyPlaylists from './MyPlaylists';
+import MyPlaylistDetails from './MyPlaylistDetails';
 import AlbumDetails from './AlbumDetails';
 import SearchResults from './SearchResults';
 import TopPlaylists from './TopPlaylists';
@@ -14,6 +17,9 @@ export {
   ArtistDetails,
   SongDetails,
   PlaylistDetails,
+  MyFavourites,
+  MyPlaylists,
+  MyPlaylistDetails,
   AlbumDetails,
   TopAlbums,
   TopArtists,

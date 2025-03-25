@@ -21,6 +21,9 @@ import {
   TopPlaylists,
   PlaylistDetails,
   AlbumDetails,
+  MyFavourites,
+  MyPlaylists,
+  MyPlaylistDetails,
 } from "./pages";
 
 const App = () => {
@@ -48,6 +51,12 @@ const App = () => {
                 element={<PlaylistDetails />}
               />
               <Route path="/albums/:albumId" element={<AlbumDetails />} />
+              <Route path="/my-favourites" element={<MyFavourites />} />
+              <Route path="/my-playlist" element={<MyPlaylists />} />
+              <Route
+                path="/my-playlist/:playlistId"
+                element={<MyPlaylistDetails />}
+              />
             </Routes>
           </div>
 
