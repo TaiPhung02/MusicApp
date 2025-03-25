@@ -16,8 +16,10 @@ const SongBar = ({
 }) => {
   return (
     <div
-      className={`w-full flex flex-row items-center hover:bg-[#4c426e] ${
-        activeSong?.id === song?.id ? "bg-[#4c426e]" : "bg-transparent"
+      className={`w-full flex flex-row items-center ${
+        isPlaying && activeSong?.id === song.id
+          ? "bg-[#505050] shadow-lg"
+          : "hover:bg-[#1b191f]"
       } py-2 p-4 rounded-lg cursor-pointer mb-2`}>
       <h3 className="font-bold text-base text-white mr-3">{i + 1}.</h3>
 
