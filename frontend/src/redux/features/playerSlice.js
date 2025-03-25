@@ -1,5 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const loadPlaylists = () => {
+  const savedPlaylists = localStorage.getItem("playlists");
+  return savedPlaylists ? JSON.parse(savedPlaylists) : [];
+};
+
 const initialState = {
   currentSongs: [],
   currentIndex: 0,
@@ -10,6 +15,7 @@ const initialState = {
   youtubeUrl: null,
   isPlaylistOpen: false,
   isShuffle: false,
+  playlists: loadPlaylists(),
 };
 
 const playerSlice = createSlice({
@@ -18,34 +24,20 @@ const playerSlice = createSlice({
   reducers: {
     setActiveSong: (state, action) => {
       const { song, data, i } = action.payload;
-
       state.activeSong = song;
       state.currentIndex = i;
       state.isActive = true;
-
-      if (data?.tracks?.data) {
-        // if data from album
-        state.currentSongs = data.tracks.data;
-      } else if (data?.data) {
-        // if data from top song
-        state.currentSongs = data.data;
-      } else if (state.currentSongs.length === 0) {
-        state.currentSongs = [];
-      }
+      state.currentSongs = data?.tracks?.data || data?.data || [];
     },
 
     nextSong: (state) => {
       if (state.isShuffle) {
-        const randomIndex = Math.floor(
+        state.currentIndex = Math.floor(
           Math.random() * state.currentSongs.length
         );
-        state.currentIndex = randomIndex;
       } else {
-        if (state.currentIndex < state.currentSongs.length - 1) {
-          state.currentIndex += 1;
-        } else {
-          state.currentIndex = 0;
-        }
+        state.currentIndex =
+          (state.currentIndex + 1) % state.currentSongs.length;
       }
       state.activeSong = state.currentSongs[state.currentIndex];
       state.isActive = true;
@@ -53,16 +45,13 @@ const playerSlice = createSlice({
 
     prevSong: (state) => {
       if (state.isShuffle) {
-        const randomIndex = Math.floor(
+        state.currentIndex = Math.floor(
           Math.random() * state.currentSongs.length
         );
-        state.currentIndex = randomIndex;
       } else {
-        if (state.currentIndex > 0) {
-          state.currentIndex -= 1;
-        } else {
-          state.currentIndex = state.currentSongs.length - 1;
-        }
+        state.currentIndex =
+          (state.currentIndex - 1 + state.currentSongs.length) %
+          state.currentSongs.length;
       }
       state.activeSong = state.currentSongs[state.currentIndex];
       state.isActive = true;
@@ -97,7 +86,6 @@ const playerSlice = createSlice({
       if (!song || !song.id) return;
 
       const currentIndex = state.currentIndex;
-
       if (currentIndex < state.currentSongs.length - 1) {
         state.currentSongs.splice(currentIndex + 1, 0, song);
       } else {
@@ -109,6 +97,41 @@ const playerSlice = createSlice({
       state.currentSongs = state.currentSongs.filter(
         (song) => song.id !== action.payload
       );
+    },
+
+    createPlaylist: (state, action) => {
+      const newPlaylist = {
+        id: Date.now().toString(),
+        name: action.payload,
+        songs: [],
+      };
+      state.playlists.push(newPlaylist);
+      localStorage.setItem("playlists", JSON.stringify(state.playlists));
+    },
+
+    addSongToPlaylist: (state, action) => {
+      const { playlistId, song } = action.payload;
+      const playlist = state.playlists.find((p) => p.id === playlistId);
+      if (playlist && !playlist.songs.some((s) => s.id === song.id)) {
+        playlist.songs.push(song);
+        localStorage.setItem("playlists", JSON.stringify(state.playlists));
+      }
+    },
+
+    removeSongFromPlaylist: (state, action) => {
+      const { playlistId, songId } = action.payload;
+      const playlist = state.playlists.find((p) => p.id === playlistId);
+      if (playlist) {
+        playlist.songs = playlist.songs.filter((s) => s.id !== songId);
+        localStorage.setItem("playlists", JSON.stringify(state.playlists));
+      }
+    },
+
+    deletePlaylist: (state, action) => {
+      state.playlists = state.playlists.filter(
+        (playlist) => playlist.id !== action.payload
+      );
+      localStorage.setItem("playlists", JSON.stringify(state.playlists));
     },
   },
 });
@@ -125,6 +148,10 @@ export const {
   closePlaylistModal,
   addNextSongToQueue,
   removeSongFromQueue,
+  createPlaylist,
+  addSongToPlaylist,
+  removeSongFromPlaylist,
+  deletePlaylist,
 } = playerSlice.actions;
 
 export default playerSlice.reducer;
