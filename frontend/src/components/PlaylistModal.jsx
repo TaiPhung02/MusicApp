@@ -154,15 +154,16 @@ const PlaylistModal = () => {
                           isPlaying={isPlaying && activeSong?.id === song.id}
                           activeSong={activeSong}
                           song={song}
-                          handlePlay={() =>
+                          handlePlay={() => {
+                            dispatch(playPause(true));
                             dispatch(
                               setActiveSong({
                                 song,
                                 data: { data: currentSongs },
                                 i: index,
                               })
-                            )
-                          }
+                            );
+                          }}
                           handlePause={() => dispatch(playPause(false))}
                         />
                       </div>
