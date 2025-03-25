@@ -11,6 +11,8 @@ import {
 import { toast } from "react-toastify";
 import {
   addNextSongToQueue,
+  addToFavourites,
+  removeFromFavourites,
   removeSongFromQueue,
 } from "../redux/features/playerSlice";
 import AddToPlaylistMenu from "./AddToPlaylistMenu";
@@ -20,7 +22,14 @@ const MoreOptionsMenu = ({ song }) => {
   const [isAddToPlaylistOpen, setIsAddToPlaylistOpen] = useState(false);
   const menuRef = useRef(null);
   const dispatch = useDispatch();
-  const currentSongs = useSelector((state) => state.player.currentSongs);
+
+  const { currentSongs, favourites } = useSelector((state) => state.player);
+
+  if (!song) {
+    return null;
+  }
+
+  const isFavourite = favourites.some((s) => s.id === song.id);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -43,6 +52,21 @@ const MoreOptionsMenu = ({ song }) => {
       toast.success("Added to queue", { autoClose: 1500 });
     }
     setIsOpen(false);
+  };
+
+  const handleToggleFavourite = () => {
+    if (!song || !song.id) {
+      console.error("Error: song is undefined or missing an ID");
+      return;
+    }
+
+    if (isFavourite) {
+      dispatch(removeFromFavourites(song.id));
+      // toast.info(`Removed from favourites`, { autoClose: 1500 });
+    } else {
+      dispatch(addToFavourites(song));
+      // toast.success(`Added to favourites`, { autoClose: 1500 });
+    }
   };
 
   return (
@@ -69,8 +93,13 @@ const MoreOptionsMenu = ({ song }) => {
             <MdPlaylistAdd className="mr-3" /> Add to playlist...
           </button>
 
-          <button className="flex items-center text-md text-white w-full px-3 py-2 rounded-md hover:bg-[#2a2830]">
-            <MdFavorite className="mr-3" /> Add to favourites
+          <button
+            onClick={handleToggleFavourite}
+            className="flex items-center text-md w-full px-3 py-2 rounded-md hover:bg-[#2a2830]">
+            <MdFavorite
+              className={`mr-3 ${isFavourite ? "text-red-500" : "text-white"}`}
+            />
+            {isFavourite ? "Remove from favourites" : "Add to favourites"}
           </button>
 
           <button className="flex items-center text-md text-white w-full px-3 py-2 rounded-md hover:bg-[#2a2830]">

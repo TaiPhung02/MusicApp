@@ -5,6 +5,11 @@ const loadPlaylists = () => {
   return savedPlaylists ? JSON.parse(savedPlaylists) : [];
 };
 
+const loadFavourites = () => {
+  const savedFavourites = localStorage.getItem("favourites");
+  return savedFavourites ? JSON.parse(savedFavourites) : [];
+};
+
 const initialState = {
   currentSongs: [],
   currentIndex: 0,
@@ -16,6 +21,7 @@ const initialState = {
   isPlaylistOpen: false,
   isShuffle: false,
   playlists: loadPlaylists(),
+  favourites: loadFavourites(),
 };
 
 const playerSlice = createSlice({
@@ -133,6 +139,22 @@ const playerSlice = createSlice({
       );
       localStorage.setItem("playlists", JSON.stringify(state.playlists));
     },
+
+    addToFavourites: (state, action) => {
+      const song = action.payload;
+      if (!song || !song.id) return;
+
+      if (!state.favourites.some((s) => s.id === song.id)) {
+        state.favourites.push(song);
+        localStorage.setItem("favourites", JSON.stringify(state.favourites));
+      }
+    },
+
+    removeFromFavourites: (state, action) => {
+      const songId = action.payload;
+      state.favourites = state.favourites.filter((s) => s.id !== songId);
+      localStorage.setItem("favourites", JSON.stringify(state.favourites));
+    },
   },
 });
 
@@ -152,6 +174,8 @@ export const {
   addSongToPlaylist,
   removeSongFromPlaylist,
   deletePlaylist,
+  addToFavourites,
+  removeFromFavourites,
 } = playerSlice.actions;
 
 export default playerSlice.reducer;

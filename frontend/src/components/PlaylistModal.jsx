@@ -14,16 +14,18 @@ import {
   removeSongFromQueue,
   playPause,
   setActiveSong,
+  addToFavourites,
+  removeFromFavourites,
 } from "../redux/features/playerSlice";
+import { toast } from "react-toastify";
 import PlayPause from "./PlayPause";
 import { motion, AnimatePresence } from "framer-motion";
 import MoreOptionsMenu from "./MoreOptionsMenu";
 
 const PlaylistModal = () => {
   const dispatch = useDispatch();
-  const { currentSongs, activeSong, isPlaylistOpen, isPlaying } = useSelector(
-    (state) => state.player
-  );
+  const { currentSongs, activeSong, isPlaylistOpen, isPlaying, favourites } =
+    useSelector((state) => state.player);
 
   const [visibleSongs, setVisibleSongs] = useState(10);
   const observerRef = useRef(null);
@@ -46,6 +48,23 @@ const PlaylistModal = () => {
     },
     [currentSongs]
   );
+
+  const handleToggleFavourite = (song) => {
+    if (!song || !song.id) {
+      console.error("Error: song is undefined or missing an ID");
+      return;
+    }
+
+    const isFavourite = favourites.some((fav) => fav.id === song.id);
+
+    if (isFavourite) {
+      dispatch(removeFromFavourites(song.id));
+      // toast.info(`Removed from favourites`, { autoClose: 1500 });
+    } else {
+      dispatch(addToFavourites(song));
+      // toast.success(`Added to favourites`, { autoClose: 1500 });
+    }
+  };
 
   return (
     <AnimatePresence>
@@ -77,12 +96,19 @@ const PlaylistModal = () => {
               <button>
                 <MdPlaylistAdd size={24} color="#FFF" />
               </button>
-              <button>
-                <MdFavorite size={24} color="#FFF" />
+
+              <button onClick={() => handleToggleFavourite(activeSong)}>
+                <MdFavorite
+                  size={24}
+                  color={
+                    favourites.some((fav) => fav.id === activeSong?.id)
+                      ? "#ef4444"
+                      : "#FFF"
+                  }
+                />
               </button>
-              <button>
-                <MoreOptionsMenu />
-              </button>
+
+              <MoreOptionsMenu song={activeSong} />
             </div>
           </div>
 
@@ -155,12 +181,19 @@ const PlaylistModal = () => {
                     </div>
                   </div>
                   <div className="flex items-center space-x-4">
-                    <button>
-                      <MdFavorite size={20} color="#FFF" />
+                    <button onClick={() => handleToggleFavourite(song)}>
+                      <MdFavorite
+                        size={20}
+                        color={
+                          favourites.some((fav) => fav.id === song.id)
+                            ? "#ef4444"
+                            : "#FFF"
+                        }
+                      />
                     </button>
-                    <button>
-                      <MoreOptionsMenu song={song} />
-                    </button>
+
+                    <MoreOptionsMenu song={song} />
+
                     <span className="text-gray-400 text-sm">
                       {Math.floor(song.duration / 60)}:
                       {String(song.duration % 60).padStart(2, "0")}
