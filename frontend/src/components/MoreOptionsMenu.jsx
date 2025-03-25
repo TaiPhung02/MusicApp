@@ -69,6 +69,24 @@ const MoreOptionsMenu = ({ song }) => {
     }
   };
 
+  const handleShare = async () => {
+    if (!song || !song.id) {
+      console.error("Error: song is undefined or missing an ID");
+      return;
+    }
+
+    const baseUrl = window.location.origin;
+    const songUrl = `${baseUrl}/songs/${song.id}`;
+
+    try {
+      await navigator.clipboard.writeText(songUrl);
+      toast.success("Link copied to clipboard!", { autoClose: 1500 });
+    } catch (err) {
+      console.error("Failed to copy:", err);
+      toast.error("Failed to copy link.", { autoClose: 1500 });
+    }
+  };
+
   return (
     <div className="relative inline-block text-left" ref={menuRef}>
       <button
@@ -102,7 +120,9 @@ const MoreOptionsMenu = ({ song }) => {
             {isFavourite ? "Remove from favourites" : "Add to favourites"}
           </button>
 
-          <button className="flex items-center text-md text-white w-full px-3 py-2 rounded-md hover:bg-[#2a2830]">
+          <button
+            onClick={handleShare}
+            className="flex items-center text-md text-white w-full px-3 py-2 rounded-md hover:bg-[#2a2830]">
             <MdShare className="mr-3" /> Share
           </button>
 
