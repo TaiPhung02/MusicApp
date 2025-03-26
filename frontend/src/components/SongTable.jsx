@@ -119,7 +119,7 @@ const SongTable = ({
           ref={index === displayTracks.length - 1 ? lastTrackRef : null}
           onClick={() => handlePlaySong(track, index)}>
           <div className="flex items-center col-span-3">
-            <div className="relative mr-3 w-14 h-14 rounded-md">
+            <div className="relative mr-3 w-14 h-14 rounded-md flex-shrink-0">
               <LazyLoadImage
                 src={track.album.cover_small}
                 alt={track.title}
@@ -150,7 +150,7 @@ const SongTable = ({
             </div>
             <Link
               to={`/songs/${track.id}`}
-              className="text-gray-300 hover:underline truncate">
+              className="text-gray-300 hover:underline truncate max-w-[70%]">
               {track.title}
             </Link>
           </div>
