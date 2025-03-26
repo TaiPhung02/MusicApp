@@ -19,6 +19,8 @@ const Player = ({
     }
   }, [seekTime]);
 
+  if (!youtubeUrl) return null;
+
   return (
     <ReactPlayer
       ref={playerRef}

@@ -64,7 +64,7 @@ const MusicPlayer = () => {
   }, [currentIndex]);
 
   const handlePlayPause = () => {
-    if (!isActive) return;
+    if (!isActive || !youtubeUrl) return;
     dispatch(playPause(!isPlaying));
   };
 
@@ -78,26 +78,18 @@ const MusicPlayer = () => {
   };
 
   useEffect(() => {
-    console.log("🔄 useEffect chạy! activeSong:", activeSong);
-
-    if (!activeSong) {
-      console.warn("⚠️ activeSong chưa có dữ liệu!");
-      return;
+    dispatch(setYoutubeUrl(null));
+    if (activeSong?.title && activeSong?.artist?.name) {
+      searchYouTube(activeSong.title, activeSong.artist.name)
+        .then((url) => {
+          if (url) {
+            console.log("YouTube URL:", url);
+            dispatch(setYoutubeUrl(url));
+          }
+        })
+        .catch((error) => console.error("YouTube Search Error:", error));
     }
-
-    console.log(
-      "🔍 Tìm kiếm YouTube URL cho:",
-      activeSong?.title,
-      activeSong?.artist?.name
-    );
-
-    searchYouTube(activeSong?.title, activeSong?.artist?.name)
-      .then((url) => {
-        console.log("✅ YouTube URL tìm được:", url);
-        dispatch(setYoutubeUrl(url));
-      })
-      .catch((error) => console.error("❌ Lỗi khi gọi searchYouTube:", error));
-  }, [activeSong]);
+  }, [activeSong, dispatch]);
 
   const handleCast = () => {
     if (
@@ -183,7 +175,7 @@ const MusicPlayer = () => {
           setSeekTime={setSeekTime}
           appTime={appTime}
         />
-        {/* <Player
+        <Player
           youtubeUrl={youtubeUrl}
           volume={volume}
           isPlaying={isPlaying}
@@ -193,7 +185,7 @@ const MusicPlayer = () => {
           onEnded={handleNextSong}
           onTimeUpdate={(event) => setAppTime(event.target.currentTime)}
           onLoadedData={(event) => setDuration(event.target.duration)}
-        /> */}
+        />
       </div>
 
       {/* Playlist, Chromecast, Volume, Adjust */}
