@@ -20,6 +20,7 @@ import Player from "./Player";
 import Seekbar from "./Seekbar";
 import Track from "./Track";
 import VolumeBar from "./VolumeBar";
+import { useGetYouTubeUrlQuery } from "../../redux/services/shazamCore";
 
 const MusicPlayer = () => {
   const {
@@ -37,6 +38,7 @@ const MusicPlayer = () => {
   console.log("isActive", isActive);
   console.log("isPlaying", isPlaying);
   console.log("youtubeUrl", youtubeUrl);
+  const dispatch = useDispatch();
   const [duration, setDuration] = useState(0);
   const [seekTime, setSeekTime] = useState(0);
   const [appTime, setAppTime] = useState(0);
@@ -44,7 +46,6 @@ const MusicPlayer = () => {
   const [repeat, setRepeat] = useState(false);
   const [showVolume, setShowVolume] = useState(false);
   const [castSession, setCastSession] = useState(null);
-  const dispatch = useDispatch();
 
   let hideTimeout;
 
@@ -77,19 +78,32 @@ const MusicPlayer = () => {
     dispatch(prevSong());
   };
 
+  const { data, error } = useGetYouTubeUrlQuery(
+    activeSong?.title && activeSong?.artist?.name
+      ? { song: activeSong.title, artist: activeSong.artist.name }
+      : skipToken
+  );
+
   useEffect(() => {
-    dispatch(setYoutubeUrl(null));
-    if (activeSong?.title && activeSong?.artist?.name) {
-      searchYouTube(activeSong.title, activeSong.artist.name)
-        .then((url) => {
-          if (url) {
-            console.log("YouTube URL:", url);
-            dispatch(setYoutubeUrl(url));
-          }
-        })
-        .catch((error) => console.error("YouTube Search Error:", error));
+    if (data?.url) {
+      console.log("data", data);
+      dispatch(setYoutubeUrl(data.url));
     }
-  }, [activeSong, dispatch]);
+  }, [data, dispatch]);
+
+  // useEffect(() => {
+  //   dispatch(setYoutubeUrl(null));
+  //   if (activeSong?.title && activeSong?.artist?.name) {
+  //     searchYouTube(activeSong.title, activeSong.artist.name)
+  //       .then((url) => {
+  //         if (url) {
+  //           console.log("YouTube URL:", url);
+  //           dispatch(setYoutubeUrl(url));
+  //         }
+  //       })
+  //       .catch((error) => console.error("YouTube Search Error:", error));
+  //   }
+  // }, [activeSong, dispatch]);
 
   const handleCast = () => {
     if (

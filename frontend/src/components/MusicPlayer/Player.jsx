@@ -33,9 +33,9 @@ const Player = ({
         onTimeUpdate({ target: { currentTime: playedSeconds } })
       }
       onDuration={(duration) => onLoadedData({ target: { duration } })}
-      width="100px"
-      height="100px"
-      config={{ youtube: { playerVars: { controls: 1 } } }}
+      width="0"
+      height="0"
+      config={{ youtube: { playerVars: { controls: 0 } } }}
     />
   );
 };

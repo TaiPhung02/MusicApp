@@ -1,10 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+const BASE_URL = "https://musicapp-backend-e28h.onrender.com/api";
+
 export const deezerApi = createApi({
   reducerPath: "deezerApi",
   baseQuery: fetchBaseQuery({
-    // baseUrl: "http://localhost:5000/api/deezer",
-    baseUrl: "https://musicapp-backend-e28h.onrender.com/api/deezer",
+    baseUrl: `${BASE_URL}/deezer`,
   }),
   endpoints: (builder) => ({
     getTopTracks: builder.query({
@@ -65,15 +66,22 @@ export const deezerApi = createApi({
       query: ({ query, limit = 20, index = 0 }) =>
         `/search/artist?q=${query}&limit=${limit}&index=${index}`,
     }),
-    
+
     searchAlbums: builder.query({
       query: ({ query, limit = 20, index = 0 }) =>
         `/search/album?q=${query}&limit=${limit}&index=${index}`,
     }),
-    
+
     searchPlaylists: builder.query({
       query: ({ query, limit = 20, index = 0 }) =>
         `/search/playlist?q=${query}&limit=${limit}&index=${index}`,
+    }),
+
+    getYouTubeUrl: builder.query({
+      query: ({ song, artist }) =>
+        `/youtube?song=${encodeURIComponent(song)}&artist=${encodeURIComponent(
+          artist
+        )}`,
     }),
   }),
 });
@@ -94,6 +102,7 @@ export const {
   useSearchArtistsQuery,
   useSearchAlbumsQuery,
   useSearchPlaylistsQuery,
+  useGetYouTubeUrlQuery,
 } = deezerApi;
 
 export const lyricsApi = createApi({
