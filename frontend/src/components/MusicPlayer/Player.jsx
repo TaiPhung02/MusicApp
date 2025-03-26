@@ -25,6 +25,8 @@ const Player = ({
   const videoId = youtubeUrl.split("v=")[1]?.split("&")[0];
   const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=0&disablekb=1`;
 
+  console.log("embedUrl", embedUrl)
+
   return (
     <ReactPlayer
       ref={playerRef}
