@@ -22,21 +22,22 @@ const Player = ({
   if (!youtubeUrl) return null;
 
   return (
-    <ReactPlayer
-      ref={playerRef}
-      url={youtubeUrl}
-      playing={isPlaying}
-      volume={volume}
-      loop={repeat}
-      onEnded={onEnded}
-      onProgress={({ playedSeconds }) =>
-        onTimeUpdate({ target: { currentTime: playedSeconds } })
-      }
-      onDuration={(duration) => onLoadedData({ target: { duration } })}
-      width="0"
-      height="0"
-      config={{ youtube: { playerVars: { controls: 0 } } }}
-    />
+    // <ReactPlayer
+    //   ref={playerRef}
+    //   url={youtubeUrl}
+    //   playing={isPlaying}
+    //   volume={volume}
+    //   loop={repeat}
+    //   onEnded={onEnded}
+    //   onProgress={({ playedSeconds }) =>
+    //     onTimeUpdate({ target: { currentTime: playedSeconds } })
+    //   }
+    //   onDuration={(duration) => onLoadedData({ target: { duration } })}
+    //   width="0"
+    //   height="0"
+    //   config={{ youtube: { playerVars: { controls: 0 } } }}
+    // />
+    <div></div>
   );
 };
 
