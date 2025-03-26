@@ -32,7 +32,6 @@ const MusicPlayer = () => {
     youtubeUrl,
     isShuffle,
   } = useSelector((state) => state.player);
-  console.log("youtubeUrl", youtubeUrl);
   const dispatch = useDispatch();
   const [duration, setDuration] = useState(0);
   const [seekTime, setSeekTime] = useState(0);
