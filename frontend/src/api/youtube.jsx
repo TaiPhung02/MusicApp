@@ -2,6 +2,8 @@ const API_KEYS = import.meta.env.VITE_YOUTUBE_API_KEYS.split(",");
 let currentKeyIndex = 0;
 
 export async function searchYouTube(songName, artist) {
+  console.log("📌 API Keys từ .env:", import.meta.env.VITE_YOUTUBE_API_KEYS);
+
   const query = encodeURIComponent(`${songName} ${artist} official audio`);
 
   while (currentKeyIndex < API_KEYS.length) {
