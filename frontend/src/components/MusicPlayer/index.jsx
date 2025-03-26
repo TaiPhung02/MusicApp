@@ -183,7 +183,7 @@ const MusicPlayer = () => {
           setSeekTime={setSeekTime}
           appTime={appTime}
         />
-        <Player
+        {/* <Player
           youtubeUrl={youtubeUrl}
           volume={volume}
           isPlaying={isPlaying}
@@ -193,7 +193,7 @@ const MusicPlayer = () => {
           onEnded={handleNextSong}
           onTimeUpdate={(event) => setAppTime(event.target.currentTime)}
           onLoadedData={(event) => setDuration(event.target.duration)}
-        />
+        /> */}
       </div>
 
       {/* Playlist, Chromecast, Volume, Adjust */}
