@@ -21,10 +21,14 @@ const Player = ({
 
   if (!youtubeUrl) return null;
 
+  // Tách videoId từ youtubeUrl
+  const videoId = youtubeUrl.split("v=")[1]?.split("&")[0];
+  const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=0&disablekb=1`;
+
   return (
     <ReactPlayer
       ref={playerRef}
-      url={youtubeUrl}
+      url={embedUrl}
       playing={isPlaying}
       volume={volume}
       loop={repeat}

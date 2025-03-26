@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const BASE_URL = "https://musicapp-backend-e28h.onrender.com/api";
+const BASE_URL = "http://localhost:5000/api";
+// const BASE_URL = "https://musicapp-backend-e28h.onrender.com/api";
 
 export const deezerApi = createApi({
   reducerPath: "deezerApi",
