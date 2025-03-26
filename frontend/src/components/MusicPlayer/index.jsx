@@ -31,6 +31,12 @@ const MusicPlayer = () => {
     youtubeUrl,
     isShuffle,
   } = useSelector((state) => state.player);
+  console.log("activeSong", activeSong)
+  console.log("currentSongs", currentSongs)
+  console.log("currentIndex", currentIndex)
+  console.log("isActive", isActive)
+  console.log("isPlaying", isPlaying)
+  console.log("youtubeUrl", youtubeUrl)
   const [duration, setDuration] = useState(0);
   const [seekTime, setSeekTime] = useState(0);
   const [appTime, setAppTime] = useState(0);
@@ -72,10 +78,14 @@ const MusicPlayer = () => {
   };
 
   useEffect(() => {
+    console.log("Active Song:", activeSong);
     if (activeSong) {
-      searchYouTube(activeSong?.title, activeSong?.artist?.name).then((url) => {
-        dispatch(setYoutubeUrl(url));
-      });
+      searchYouTube(activeSong?.title, activeSong?.artist?.name)
+        .then((url) => {
+          console.log("YouTube URL:", url);
+          dispatch(setYoutubeUrl(url));
+        })
+        .catch((error) => console.error("YouTube Search Error:", error));
     }
   }, [activeSong]);
 
