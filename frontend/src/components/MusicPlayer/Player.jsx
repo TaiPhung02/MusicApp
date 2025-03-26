@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from "react";
-import ReactPlayer from "react-player";
+import ReactPlayer from "react-player/youtube";
 
 const Player = ({
   youtubeUrl,
@@ -21,25 +21,32 @@ const Player = ({
 
   if (!youtubeUrl) return null;
 
-  // Tách videoId từ youtubeUrl
-  const videoId = youtubeUrl.split("v=")[1]?.split("&")[0];
-  const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=0&disablekb=1`;
-
   return (
     <ReactPlayer
       ref={playerRef}
-      url={embedUrl}
+      url={youtubeUrl}
       playing={isPlaying}
       volume={volume}
       loop={repeat}
+      controls={false}
+      width="0"
+      height="0"
       onEnded={onEnded}
       onProgress={({ playedSeconds }) =>
         onTimeUpdate({ target: { currentTime: playedSeconds } })
       }
       onDuration={(duration) => onLoadedData({ target: { duration } })}
-      width="0"
-      height="0"
-      config={{ youtube: { playerVars: { controls: 0 } } }}
+      config={{
+        youtube: {
+          playerVars: {
+            autoplay: 1,
+            controls: 0,
+            disablekb: 1,
+            modestbranding: 1,
+            rel: 0,
+          },
+        },
+      }}
     />
   );
 };
