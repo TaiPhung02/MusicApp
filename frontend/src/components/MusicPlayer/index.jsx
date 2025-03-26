@@ -32,11 +32,6 @@ const MusicPlayer = () => {
     youtubeUrl,
     isShuffle,
   } = useSelector((state) => state.player);
-  console.log("activeSong", activeSong);
-  console.log("currentSongs", currentSongs);
-  console.log("currentIndex", currentIndex);
-  console.log("isActive", isActive);
-  console.log("isPlaying", isPlaying);
   console.log("youtubeUrl", youtubeUrl);
   const dispatch = useDispatch();
   const [duration, setDuration] = useState(0);
