@@ -76,13 +76,6 @@ export const deezerApi = createApi({
       query: ({ query, limit = 20, index = 0 }) =>
         `/search/playlist?q=${query}&limit=${limit}&index=${index}`,
     }),
-
-    getYouTubeUrl: builder.query({
-      query: ({ song, artist }) =>
-        `/youtube?song=${encodeURIComponent(song)}&artist=${encodeURIComponent(
-          artist
-        )}`,
-    }),
   }),
 });
 
@@ -102,8 +95,24 @@ export const {
   useSearchArtistsQuery,
   useSearchAlbumsQuery,
   useSearchPlaylistsQuery,
-  useGetYouTubeUrlQuery,
 } = deezerApi;
+
+export const youtubeApi = createApi({
+  reducerPath: "youtubeApi",
+  baseQuery: fetchBaseQuery({
+    baseUrl: `${BASE_URL}`,
+  }),
+  endpoints: (builder) => ({
+    getYouTubeUrl: builder.query({
+      query: ({ song, artist }) =>
+        `/youtube?song=${encodeURIComponent(song)}&artist=${encodeURIComponent(
+          artist
+        )}`,
+    }),
+  }),
+});
+
+export const { useGetYouTubeUrlQuery } = youtubeApi;
 
 export const lyricsApi = createApi({
   reducerPath: "lyricsApi",
