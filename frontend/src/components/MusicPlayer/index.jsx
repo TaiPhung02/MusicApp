@@ -81,7 +81,6 @@ const MusicPlayer = () => {
 
   useEffect(() => {
     if (data?.url) {
-      console.log("data", data);
       dispatch(setYoutubeUrl(data.url));
     }
   }, [data, dispatch]);
