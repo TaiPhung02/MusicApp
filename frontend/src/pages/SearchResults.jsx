@@ -125,7 +125,7 @@ const SearchResults = () => {
   };
 
   return (
-    <div className="px-6 py-4 text-white">
+    <div className="px-0 sm:px-6 py-4 text-white">
       <h2 className="text-2xl font-semibold mb-4">
         Search results for "{query}"
       </h2>

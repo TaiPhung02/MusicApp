@@ -49,7 +49,10 @@ const MyFavourites = () => {
           <p className="text-gray-400 text-sm mt-2">
             {favouriteSongs.length} tracks |{" "}
             {formatDuration(
-              favouriteSongs.reduce((acc, song) => acc + (song.duration || 0), 0)
+              favouriteSongs.reduce(
+                (acc, song) => acc + (song.duration || 0),
+                0
+              )
             )}
           </p>
         </div>
