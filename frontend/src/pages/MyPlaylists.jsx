@@ -1,15 +1,11 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useRef, useCallback, useState } from "react";
+import { useSelector } from "react-redux";
 import { Error } from "../components";
 import MyPlaylistCard from "../components/MyPlaylistCard";
 
 const MyPlaylists = () => {
-  const [playlists, setPlaylists] = useState([]);
+  const playlists = useSelector((state) => state.player.playlists);
   const [visibleCount, setVisibleCount] = useState(10);
-
-  useEffect(() => {
-    const storedPlaylists = JSON.parse(localStorage.getItem("playlists")) || [];
-    setPlaylists(storedPlaylists);
-  }, []);
 
   // Infinite Scroll
   const observerRef = useRef();

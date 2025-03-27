@@ -8,6 +8,7 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 
 import { logo } from "../assets";
 import { links } from "../assets/constants";
+import { useSelector } from "react-redux";
 
 const NavLinks = ({ handleClick, showFavourites, showPlaylist }) => (
   <div className="mt-10">
@@ -21,8 +22,7 @@ const NavLinks = ({ handleClick, showFavourites, showPlaylist }) => (
           ${isActive ? "text-cyan-400" : "text-gray-400"} hover:text-cyan-400`
         }
         onClick={() => handleClick && handleClick()}>
-        <item.icon className="w-6 h-6 mr-2 text-white" />{" "}
-        {item.name}
+        <item.icon className="w-6 h-6 mr-2 text-white" /> {item.name}
       </NavLink>
     ))}
 
@@ -34,8 +34,7 @@ const NavLinks = ({ handleClick, showFavourites, showPlaylist }) => (
           ${isActive ? "text-red-400" : "text-gray-400"} hover:text-red-400`
         }
         onClick={() => handleClick && handleClick()}>
-        <MdFavorite className="w-6 h-6 mr-2 text-red-400" />{" "}
-        Favourites
+        <MdFavorite className="w-6 h-6 mr-2 text-red-400" /> Favourites
       </NavLink>
     )}
 
@@ -47,8 +46,7 @@ const NavLinks = ({ handleClick, showFavourites, showPlaylist }) => (
           ${isActive ? "text-blue-400" : "text-gray-400"} hover:text-blue-400`
         }
         onClick={() => handleClick && handleClick()}>
-        <MdPlaylistPlay className="w-6 h-6 mr-2 text-blue-400" />{" "}
-        Playlist
+        <MdPlaylistPlay className="w-6 h-6 mr-2 text-blue-400" /> Playlist
       </NavLink>
     )}
   </div>
@@ -56,17 +54,7 @@ const NavLinks = ({ handleClick, showFavourites, showPlaylist }) => (
 
 const Sidebar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [showFavourites, setShowFavourites] = useState(false);
-  const [showPlaylist, setShowPlaylist] = useState(false);
-
-  // check localStorage when component mount
-  useEffect(() => {
-    const favourites = JSON.parse(localStorage.getItem("favourites")) || [];
-    const playlists = JSON.parse(localStorage.getItem("playlists")) || [];
-
-    setShowFavourites(favourites.length > 0);
-    setShowPlaylist(playlists.length > 0);
-  }, []);
+  const { favourites, playlists } = useSelector((state) => state.player);
 
   return (
     <>
@@ -78,7 +66,10 @@ const Sidebar = () => {
           className="w-full h-14 object-contain"
           effect="blur"
         />
-        <NavLinks showFavourites={showFavourites} showPlaylist={showPlaylist} />
+        <NavLinks
+          showFavourites={favourites.length > 0}
+          showPlaylist={playlists.length > 0}
+        />
       </div>
 
       <div className="absolute md:hidden block top-6 right-3">
@@ -108,8 +99,8 @@ const Sidebar = () => {
         />
         <NavLinks
           handleClick={() => setMobileMenuOpen(false)}
-          showFavourites={showFavourites}
-          showPlaylist={showPlaylist}
+          showFavourites={favourites.length > 0}
+          showPlaylist={playlists.length > 0}
         />
       </div>
     </>

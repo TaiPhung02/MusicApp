@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   FaPlay,
@@ -8,31 +7,25 @@ import {
   FaEllipsisH,
 } from "react-icons/fa";
 import { playPause, setActiveSong } from "../redux/features/playerSlice";
-import { Loader, Error, SongTable } from "../components";
+import { Error, SongTable } from "../components";
 import { formatDuration } from "./PlaylistDetails";
 
 const MyFavourites = () => {
   const dispatch = useDispatch();
-  const { activeSong, isPlaying } = useSelector((state) => state.player);
-  const [favouriteSongs, setFavouriteSongs] = useState([]);
-
-  useEffect(() => {
-    const storedFavourites =
-      JSON.parse(localStorage.getItem("favourites")) || [];
-    setFavouriteSongs(storedFavourites);
-  }, []);
+  const { activeSong, isPlaying, favourites } = useSelector(
+    (state) => state.player
+  );
 
   const handlePlaySong = (song, index) => {
     dispatch(playPause(true));
-    dispatch(setActiveSong({ song, data: { data: favouriteSongs }, i: index }));
+    dispatch(setActiveSong({ song, data: { data: favourites }, i: index }));
   };
 
   const handlePauseSong = () => {
     dispatch(playPause(false));
   };
 
-  if (!favouriteSongs.length)
-    return <Error title="No favourite songs found!" />;
+  if (!favourites.length) return <Error title="No favourite songs found!" />;
 
   return (
     <div className="flex flex-col px-6 py-4">
@@ -47,12 +40,9 @@ const MyFavourites = () => {
             A collection of your favourite songs
           </p>
           <p className="text-gray-400 text-sm mt-2">
-            {favouriteSongs.length} tracks |{" "}
+            {favourites.length} tracks |{" "}
             {formatDuration(
-              favouriteSongs.reduce(
-                (acc, song) => acc + (song.duration || 0),
-                0
-              )
+              favourites.reduce((acc, song) => acc + (song.duration || 0), 0)
             )}
           </p>
         </div>
@@ -63,7 +53,7 @@ const MyFavourites = () => {
         <button
           className="text-white bg-purple-500 hover:bg-purple-600 p-3 rounded-full"
           onClick={() =>
-            isPlaying ? handlePauseSong() : handlePlaySong(favouriteSongs[0], 0)
+            isPlaying ? handlePauseSong() : handlePlaySong(favourites[0], 0)
           }>
           {isPlaying ? <FaPause size={18} /> : <FaPlay size={18} />}
         </button>
@@ -77,7 +67,7 @@ const MyFavourites = () => {
 
       {/* Song Table */}
       <SongTable
-        tracks={favouriteSongs}
+        tracks={favourites}
         handlePlaySong={handlePlaySong}
         handlePauseSong={handlePauseSong}
         activeSong={activeSong}

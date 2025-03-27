@@ -1,13 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const loadPlaylists = () => {
-  const savedPlaylists = localStorage.getItem("playlists");
-  return savedPlaylists ? JSON.parse(savedPlaylists) : [];
-};
-
-const loadFavourites = () => {
-  const savedFavourites = localStorage.getItem("favourites");
-  return savedFavourites ? JSON.parse(savedFavourites) : [];
+const loadFromLocalStorage = (key, defaultValue = []) => {
+  const savedData = localStorage.getItem(key);
+  return savedData ? JSON.parse(savedData) : defaultValue;
 };
 
 const initialState = {
@@ -20,8 +15,12 @@ const initialState = {
   youtubeUrl: null,
   isPlaylistOpen: false,
   isShuffle: false,
-  playlists: loadPlaylists(),
-  favourites: loadFavourites(),
+  playlists: loadFromLocalStorage("playlists"),
+  favourites: loadFromLocalStorage("favourites"),
+};
+
+const saveToLocalStorage = (key, data) => {
+  localStorage.setItem(key, JSON.stringify(data));
 };
 
 const playerSlice = createSlice({
@@ -112,7 +111,7 @@ const playerSlice = createSlice({
         songs: [],
       };
       state.playlists.push(newPlaylist);
-      localStorage.setItem("playlists", JSON.stringify(state.playlists));
+      saveToLocalStorage("playlists", state.playlists);
     },
 
     addSongToPlaylist: (state, action) => {
@@ -120,7 +119,7 @@ const playerSlice = createSlice({
       const playlist = state.playlists.find((p) => p.id === playlistId);
       if (playlist && !playlist.songs.some((s) => s.id === song.id)) {
         playlist.songs.push(song);
-        localStorage.setItem("playlists", JSON.stringify(state.playlists));
+        saveToLocalStorage("playlists", state.playlists);
       }
     },
 
@@ -129,7 +128,7 @@ const playerSlice = createSlice({
       const playlist = state.playlists.find((p) => p.id === playlistId);
       if (playlist) {
         playlist.songs = playlist.songs.filter((s) => s.id !== songId);
-        localStorage.setItem("playlists", JSON.stringify(state.playlists));
+        saveToLocalStorage("playlists", state.playlists);
       }
     },
 
@@ -137,7 +136,7 @@ const playerSlice = createSlice({
       state.playlists = state.playlists.filter(
         (playlist) => playlist.id !== action.payload
       );
-      localStorage.setItem("playlists", JSON.stringify(state.playlists));
+      saveToLocalStorage("playlists", state.playlists);
     },
 
     addToFavourites: (state, action) => {
@@ -146,14 +145,14 @@ const playerSlice = createSlice({
 
       if (!state.favourites.some((s) => s.id === song.id)) {
         state.favourites.push(song);
-        localStorage.setItem("favourites", JSON.stringify(state.favourites));
+        saveToLocalStorage("favourites", state.favourites);
       }
     },
 
     removeFromFavourites: (state, action) => {
       const songId = action.payload;
       state.favourites = state.favourites.filter((s) => s.id !== songId);
-      localStorage.setItem("favourites", JSON.stringify(state.favourites));
+      saveToLocalStorage("favourites", state.favourites);
     },
   },
 });

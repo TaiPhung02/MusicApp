@@ -3,20 +3,21 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { FaPlay, FaPause, FaShareAlt, FaEllipsisH } from "react-icons/fa";
 import { playPause, setActiveSong } from "../redux/features/playerSlice";
-import { Loader, Error, SongTable } from "../components";
+import { Error, SongTable } from "../components";
 import { formatDuration } from "./PlaylistDetails";
 
 const MyPlaylistDetails = () => {
   const { playlistId } = useParams();
   const dispatch = useDispatch();
-  const { activeSong, isPlaying } = useSelector((state) => state.player);
+  const { activeSong, isPlaying, playlists } = useSelector(
+    (state) => state.player
+  );
   const [playlist, setPlaylist] = useState(null);
 
   useEffect(() => {
-    const storedPlaylists = JSON.parse(localStorage.getItem("playlists")) || [];
-    const foundPlaylist = storedPlaylists.find((p) => p.id === playlistId);
+    const foundPlaylist = playlists.find((p) => p.id === playlistId);
     setPlaylist(foundPlaylist);
-  }, [playlistId]);
+  }, [playlistId, playlists]);
 
   if (!playlist) return <Error title="Playlist not found!" />;
 
