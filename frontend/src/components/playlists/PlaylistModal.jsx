@@ -16,11 +16,11 @@ import {
   setActiveSong,
   addToFavourites,
   removeFromFavourites,
-} from "../redux/features/playerSlice";
+} from "../../redux/features/playerSlice";
 import { toast } from "react-toastify";
-import PlayPause from "./PlayPause";
+import PlayPause from "../music/PlayPause";
 import { motion, AnimatePresence } from "framer-motion";
-import MoreOptionsMenu from "./MoreOptionsMenu";
+import MoreOptionsMenu from "../menus/MoreOptionsMenu";
 
 const PlaylistModal = () => {
   const dispatch = useDispatch();

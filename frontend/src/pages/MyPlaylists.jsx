@@ -1,7 +1,7 @@
 import { useRef, useCallback, useState } from "react";
 import { useSelector } from "react-redux";
 import { Error } from "../components";
-import MyPlaylistCard from "../components/MyPlaylistCard";
+import MyPlaylistCard from "../components/playlists/MyPlaylistCard";
 
 const MyPlaylists = () => {
   const playlists = useSelector((state) => state.player.playlists);

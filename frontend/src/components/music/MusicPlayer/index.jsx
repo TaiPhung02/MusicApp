@@ -7,7 +7,7 @@ import {
   BsFillVolumeMuteFill,
 } from "react-icons/bs";
 import { MdPlaylistPlay, MdCast, MdTune } from "react-icons/md";
-import { searchYouTube } from "../../api/youtube";
+import { searchYouTube } from "../../../api/youtube";
 import {
   nextSong,
   prevSong,
@@ -15,13 +15,13 @@ import {
   setYoutubeUrl,
   openPlaylistModal,
   closePlaylistModal,
-} from "../../redux/features/playerSlice";
+} from "../../../redux/features/playerSlice";
 import Controls from "./Controls";
 import Player from "./Player";
 import Seekbar from "./Seekbar";
 import Track from "./Track";
 import VolumeBar from "./VolumeBar";
-import { useGetYouTubeUrlQuery } from "../../redux/services/shazamCore";
+import { useGetYouTubeUrlQuery } from "../../../redux/services/shazamCore";
 
 const MusicPlayer = () => {
   const {

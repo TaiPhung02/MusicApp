@@ -1,6 +1,6 @@
-import Notification from "./Notification";
-import Searchbar from "./Searchbar";
-import User from "./User";
+import Notification from "../common/Notification";
+import Searchbar from "../search/Searchbar";
+import User from "../user/User";
 
 const Header = () => {
   return (

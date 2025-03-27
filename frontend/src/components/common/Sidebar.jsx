@@ -6,8 +6,8 @@ import { MdFavorite, MdPlaylistPlay } from "react-icons/md";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 
-import { logo } from "../assets";
-import { links } from "../assets/constants";
+import { logo } from "../../assets";
+import { links } from "../../assets/constants";
 import { useSelector } from "react-redux";
 
 const NavLinks = ({ handleClick, showFavourites, showPlaylist }) => (

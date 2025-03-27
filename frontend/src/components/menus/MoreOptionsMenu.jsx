@@ -14,7 +14,7 @@ import {
   addToFavourites,
   removeFromFavourites,
   removeSongFromQueue,
-} from "../redux/features/playerSlice";
+} from "../../redux/features/playerSlice";
 import AddToPlaylistMenu from "./AddToPlaylistMenu";
 
 const MoreOptionsMenu = ({ song }) => {

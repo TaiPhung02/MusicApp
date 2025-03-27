@@ -10,7 +10,7 @@ import {
   addSongToPlaylist,
   removeSongFromPlaylist,
   createPlaylist,
-} from "../redux/features/playerSlice";
+} from "../../redux/features/playerSlice";
 import { toast } from "react-toastify";
 
 const AddToPlaylistMenu = ({ onBack, onClose, song }) => {

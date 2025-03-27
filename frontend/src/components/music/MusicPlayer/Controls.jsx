@@ -7,7 +7,7 @@ import {
   BsShuffle,
 } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleShuffle } from "../../redux/features/playerSlice";
+import { toggleShuffle } from "../../../redux/features/playerSlice";
 
 const Controls = ({
   isPlaying,

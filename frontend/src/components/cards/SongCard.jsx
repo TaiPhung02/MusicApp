@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import PlayPause from "./PlayPause";
-import { playPause } from "../redux/features/playerSlice";
+import PlayPause from "../music/PlayPause";
+import { playPause } from "../../redux/features/playerSlice";
 import { forwardRef } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
