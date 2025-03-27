@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useRef, useCallback, useEffect } from "react";
-import { Error, Loader, ArtistCard } from "../components";
-import { useGetTopArtistsQuery } from "../redux/services/shazamCore";
+import { Error, Loader, ArtistCard } from "../../components";
+import { useGetTopArtistsQuery } from "../../redux/services/shazamCore";
 
 const TopArtists = () => {
   const [page, setPage] = useState(0);

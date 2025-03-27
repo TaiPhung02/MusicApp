@@ -6,12 +6,12 @@ import {
   useSearchArtistsQuery,
   useSearchAlbumsQuery,
   useSearchPlaylistsQuery,
-} from "../redux/services/shazamCore";
-import Loader from "../components/common/Loader";
-import Error from "../components/common/Error";
-import SongTable from "../components/music/SongTable";
+} from "../../redux/services/shazamCore";
+import Loader from "../../components/common/Loader";
+import Error from "../../components/common/Error";
+import SongTable from "../../components/music/SongTable";
 import { useDispatch, useSelector } from "react-redux";
-import { playPause, setActiveSong } from "../redux/features/playerSlice";
+import { playPause, setActiveSong } from "../../redux/features/playerSlice";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 

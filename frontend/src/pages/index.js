@@ -1,27 +1,33 @@
-import Discover from './Discover';
-import TopArtists from './TopArtists';
-import ArtistDetails from './ArtistDetails';
-import SongDetails from './SongDetails';
-import PlaylistDetails from './PlaylistDetails';
-import MyFavourites from './MyFavourites';
-import MyPlaylists from './MyPlaylists';
-import MyPlaylistDetails from './MyPlaylistDetails';
-import AlbumDetails from './AlbumDetails';
-import SearchResults from './SearchResults';
-import TopPlaylists from './TopPlaylists';
-import TopAlbums from './TopAlbums';
+import TopAlbums from "./charts/TopAlbums";
+import TopArtists from "./charts/TopArtists";
+import TopPlaylists from "./charts/TopPlaylists";
+
+import AlbumDetails from "./music/AlbumDetails";
+import ArtistDetails from "./music/ArtistDetails";
+import Discover from "./music/Discover";
+import PlaylistDetails from "./music/PlaylistDetails";
+import SongDetails from "./music/SongDetails";
+
+import SearchResults from "./search/SearchResults";
+
+import MyFavourites from "./user/MyFavourites";
+import MyPlaylistDetails from "./user/MyPlaylistDetails";
+import MyPlaylists from "./user/MyPlaylists";
 
 export {
-  Discover,
-  SearchResults,
-  ArtistDetails,
-  SongDetails,
-  PlaylistDetails,
-  MyFavourites,
-  MyPlaylists,
-  MyPlaylistDetails,
-  AlbumDetails,
   TopAlbums,
   TopArtists,
   TopPlaylists,
+
+  AlbumDetails,
+  ArtistDetails,
+  Discover,
+  PlaylistDetails,
+  SongDetails,
+
+  SearchResults,
+  
+  MyFavourites,
+  MyPlaylistDetails,
+  MyPlaylists,
 };

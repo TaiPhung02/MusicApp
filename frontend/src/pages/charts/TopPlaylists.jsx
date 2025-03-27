@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback, useEffect } from "react";
-import { Error, Loader, PlaylistCard } from "../components";
-import { useGetTopPlaylistsQuery } from "../redux/services/shazamCore";
+import { Error, Loader, PlaylistCard } from "../../components";
+import { useGetTopPlaylistsQuery } from "../../redux/services/shazamCore";
 
 const TopPlaylists = () => {
   const [page, setPage] = useState(0);

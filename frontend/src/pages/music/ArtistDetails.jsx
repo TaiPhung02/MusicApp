@@ -1,14 +1,14 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect, useRef, useCallback } from "react";
-import { DetailsHeader, Error, Loader, PopularSongs } from "../components";
-import { setActiveSong, playPause } from "../redux/features/playerSlice";
+import { DetailsHeader, Error, Loader, PopularSongs } from "../../components";
+import { setActiveSong, playPause } from "../../redux/features/playerSlice";
 import {
   useGetArtistTopTracksQuery,
   useGetArtistAlbumsQuery,
   useGetAlbumTracksQuery,
   useGetArtistDetailsQuery,
-} from "../redux/services/shazamCore";
+} from "../../redux/services/shazamCore";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 

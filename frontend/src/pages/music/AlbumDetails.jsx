@@ -1,9 +1,9 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { playPause, setActiveSong } from "../redux/features/playerSlice";
-import { useGetAlbumDetailsQuery } from "../redux/services/shazamCore";
-import { Loader, Error, SongTable } from "../components";
+import { playPause, setActiveSong } from "../../redux/features/playerSlice";
+import { useGetAlbumDetailsQuery } from "../../redux/services/shazamCore";
+import { Loader, Error, SongTable } from "../../components";
 import {
   FaPlay,
   FaPause,
@@ -11,25 +11,8 @@ import {
   FaShareAlt,
   FaEllipsisH,
 } from "react-icons/fa";
-
-export const formatDate = (dateString) => {
-  if (!dateString) return "Unknown";
-  const date = new Date(dateString);
-  return date.toLocaleDateString("en-GB");
-};
-
-export const formatTotalDuration = (tracks) => {
-  if (!tracks || tracks.length === 0) return "0 minutes";
-
-  const totalSeconds = tracks.reduce((sum, track) => sum + track.duration, 0);
-  const hours = Math.floor(totalSeconds / 3600);
-  const minutes = Math.floor((totalSeconds % 3600) / 60);
-
-  if (hours > 0) {
-    return `${hours} hrs ${minutes} minutes`;
-  }
-  return `${minutes} minutes`;
-};
+import { formatTotalDuration } from "../../utils/formatTotalDuration";
+import { formatDate } from "../../utils/formatDate";
 
 const AlbumDetails = () => {
   const { albumId } = useParams();

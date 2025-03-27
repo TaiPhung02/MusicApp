@@ -1,48 +1,52 @@
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  FaPlay,
-  FaPause,
-  FaHeart,
-  FaShareAlt,
-  FaEllipsisH,
-} from "react-icons/fa";
-import { playPause, setActiveSong } from "../redux/features/playerSlice";
-import { Error, SongTable } from "../components";
-import { formatDuration } from "./PlaylistDetails";
+import { FaPlay, FaPause, FaShareAlt, FaEllipsisH } from "react-icons/fa";
+import { playPause, setActiveSong } from "../../redux/features/playerSlice";
+import { Error, SongTable } from "../../components";
+import { formatDuration } from "../../utils/formatDuration";
 
-const MyFavourites = () => {
+const MyPlaylistDetails = () => {
+  const { playlistId } = useParams();
   const dispatch = useDispatch();
-  const { activeSong, isPlaying, favourites } = useSelector(
+  const { activeSong, isPlaying, playlists } = useSelector(
     (state) => state.player
   );
+  const [playlist, setPlaylist] = useState(null);
+
+  useEffect(() => {
+    const foundPlaylist = playlists.find((p) => p.id === playlistId);
+    setPlaylist(foundPlaylist);
+  }, [playlistId, playlists]);
+
+  if (!playlist) return <Error title="Playlist not found!" />;
 
   const handlePlaySong = (song, index) => {
     dispatch(playPause(true));
-    dispatch(setActiveSong({ song, data: { data: favourites }, i: index }));
+    dispatch(setActiveSong({ song, data: { data: playlist.songs }, i: index }));
   };
 
   const handlePauseSong = () => {
     dispatch(playPause(false));
   };
 
-  if (!favourites.length) return <Error title="No favourite songs found!" />;
-
   return (
     <div className="flex flex-col px-6 py-4">
       {/* Header */}
       <div className="flex items-center gap-6">
         <div className="w-52 h-52 bg-purple-500 flex items-center justify-center rounded-lg shadow-lg">
-          <FaHeart size={50} className="text-white" />
+          <FaPlay size={50} className="text-white" />
         </div>
         <div>
-          <h1 className="text-4xl font-bold text-white">My Favourites</h1>
-          <p className="text-gray-300 mt-2">
-            A collection of your favourite songs
-          </p>
+          <h1 className="text-4xl font-bold text-white">{playlist.name}</h1>
+          <p className="text-gray-300 mt-2">A custom playlist</p>
           <p className="text-gray-400 text-sm mt-2">
-            {favourites.length} tracks |{" "}
+            {playlist.songs.length} tracks |{" "}
             {formatDuration(
-              favourites.reduce((acc, song) => acc + (song.duration || 0), 0)
+              playlist.songs.reduce(
+                (acc, song) => acc + (song.duration || 0),
+                0
+              )
             )}
           </p>
         </div>
@@ -53,7 +57,7 @@ const MyFavourites = () => {
         <button
           className="text-white bg-purple-500 hover:bg-purple-600 p-3 rounded-full"
           onClick={() =>
-            isPlaying ? handlePauseSong() : handlePlaySong(favourites[0], 0)
+            isPlaying ? handlePauseSong() : handlePlaySong(playlist.songs[0], 0)
           }>
           {isPlaying ? <FaPause size={18} /> : <FaPlay size={18} />}
         </button>
@@ -67,7 +71,7 @@ const MyFavourites = () => {
 
       {/* Song Table */}
       <SongTable
-        tracks={favourites}
+        tracks={playlist.songs}
         handlePlaySong={handlePlaySong}
         handlePauseSong={handlePauseSong}
         activeSong={activeSong}
@@ -77,4 +81,4 @@ const MyFavourites = () => {
   );
 };
 
-export default MyFavourites;
+export default MyPlaylistDetails;

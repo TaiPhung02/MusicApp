@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback, useEffect } from "react";
-import { useGetTopAlbumsQuery } from "../redux/services/shazamCore";
-import { Error, Loader, AlbumCard } from "../components";
+import { useGetTopAlbumsQuery } from "../../redux/services/shazamCore";
+import { Error, Loader, AlbumCard } from "../../components";
 
 const TopAlbums = () => {
   const [page, setPage] = useState(0);

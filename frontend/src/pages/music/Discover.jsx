@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useRef, useCallback, useEffect } from "react";
-import { Error, Loader, SongCard } from "../components";
-import { useGetTopTracksQuery } from "../redux/services/shazamCore";
-import { genres } from "../assets/constants";
-import { setActiveSong } from "../redux/features/playerSlice";
+import { Error, Loader, SongCard } from "../../components";
+import { useGetTopTracksQuery } from "../../redux/services/shazamCore";
+import { genres } from "../../assets/constants";
+import { setActiveSong } from "../../redux/features/playerSlice";
 
 const Discover = () => {
   const dispatch = useDispatch();

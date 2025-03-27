@@ -1,16 +1,16 @@
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { FaPlay, FaPause } from "react-icons/fa";
-import { DetailsHeader, Error, Loader, PopularSongs } from "../components";
-import { setActiveSong, playPause } from "../redux/features/playerSlice";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 import {
   useGetArtistTopTracksQuery,
   useGetSongDetailsQuery,
   useGetAlbumDetailsQuery,
   useGetLyricsQuery,
-} from "../redux/services/shazamCore";
-import { LazyLoadImage } from "react-lazy-load-image-component";
-import "react-lazy-load-image-component/src/effects/blur.css";
+} from "../../redux/services/shazamCore";
+import { DetailsHeader, Error, Loader, PopularSongs } from "../../components";
+import { setActiveSong, playPause } from "../../redux/features/playerSlice";
 
 const SongDetails = () => {
   const dispatch = useDispatch();
@@ -51,9 +51,11 @@ const SongDetails = () => {
   });
 
   const uniqueTracks = Array.from(
-    new Map(albumData?.tracks?.data.map((track) => [track.title, track])).values()
+    new Map(
+      albumData?.tracks?.data.map((track) => [track.title, track])
+    ).values()
   );
-  
+
   const handlePauseClick = () => {
     dispatch(playPause(false));
   };
@@ -68,11 +70,7 @@ const SongDetails = () => {
     dispatch(playPause(true));
   };
 
-  if (
-    isFetchingSongDetails ||
-    isFetchingPopularSongs ||
-    isFetchingAlbum
-  ) {
+  if (isFetchingSongDetails || isFetchingPopularSongs || isFetchingAlbum) {
     return <Loader />;
   }
 
