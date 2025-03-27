@@ -14,6 +14,7 @@ import {
   playPause,
   setYoutubeUrl,
   openPlaylistModal,
+  closePlaylistModal,
 } from "../../redux/features/playerSlice";
 import Controls from "./Controls";
 import Player from "./Player";
@@ -30,6 +31,7 @@ const MusicPlayer = () => {
     isActive,
     isPlaying,
     youtubeUrl,
+    isPlaylistOpen,
     isShuffle,
   } = useSelector((state) => state.player);
   const dispatch = useDispatch();
@@ -97,6 +99,14 @@ const MusicPlayer = () => {
   //       .catch((error) => console.error("YouTube Search Error:", error));
   //   }
   // }, [activeSong, dispatch]);
+
+  const handleToggleModal = () => {
+    if (isPlaylistOpen) {
+      dispatch(closePlaylistModal());
+    } else {
+      dispatch(openPlaylistModal());
+    }
+  };
 
   const handleCast = () => {
     if (
@@ -200,7 +210,7 @@ const MusicPlayer = () => {
         {/* Playlist Icon */}
         <div
           className="group p-2 rounded-full hover:bg-[#3a393d] transition cursor-pointer"
-          onClick={() => dispatch(openPlaylistModal())}>
+          onClick={handleToggleModal}>
           <MdPlaylistPlay size={25} color="#FFF" />
         </div>
 
