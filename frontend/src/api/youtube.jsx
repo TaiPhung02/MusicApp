@@ -2,7 +2,7 @@ const API_KEYS = import.meta.env.VITE_YOUTUBE_API_KEYS.split(",");
 let currentKeyIndex = 0;
 
 export async function searchYouTube(songName, artist) {
-  const query = encodeURIComponent(`${songName} ${artist} official audio`);
+  const query = encodeURIComponent(`${songName} ${artist}`);
 
   while (currentKeyIndex < API_KEYS.length) {
     const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${query}&type=video&key=${API_KEYS[currentKeyIndex]}`;

@@ -67,9 +67,7 @@ const App = () => {
       </div>
 
       {activeSong?.id && (
-        <div
-          className="absolute h-20 bottom-0 left-0 right-0 flex animate-slideup bg-[#1b191f] border-t border-solid border-[#555257] z-10"
-          style={{ paddingBottom: "env(safe-area-inset-bottom)" }}>
+        <div className="pb-20 md:pb-4 py-2 absolute bottom-0 left-0 right-0 flex animate-slideup bg-[#1b191f] border-t border-solid border-[#555257] z-10">
           <MusicPlayer />
         </div>
       )}
