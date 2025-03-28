@@ -36,7 +36,7 @@ const App = () => {
       <div className="flex-1 flex flex-col bg-[#0F0D13]">
         <Header />
 
-        <div className="px-6 h-[calc(100vh-72px)] overflow-y-scroll hide-scrollbar flex flex-col xl:flex-row border-y border-solid border-[#555257]">
+        <div className="px-4 h-[calc(100vh-72px)] overflow-y-scroll hide-scrollbar flex flex-col xl:flex-row border-y border-solid border-[#555257]">
           <div className="flex-1 h-fit pb-40">
             <Routes>
               <Route path="/" element={<Discover />} />

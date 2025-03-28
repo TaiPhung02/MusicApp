@@ -162,7 +162,7 @@ const MusicPlayer = () => {
   };
 
   return (
-    <div className="relative sm:px-12 px-8 w-full flex items-center justify-between">
+    <div className="relative sm:px-12 px-4 md:px-8 w-full flex items-center justify-between">
       {/* Track */}
       <div className="flex-1 flex justify-start">
         <Track
