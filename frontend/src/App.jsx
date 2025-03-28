@@ -67,7 +67,7 @@ const App = () => {
       </div>
 
       {activeSong?.id && (
-        <div className="pb-28 md:pb-4 py-2 absolute bottom-0 left-0 right-0 flex animate-slideup bg-[#1b191f] border-t border-solid border-[#555257] z-10">
+        <div className="pb-32 md:pb-4 py-2 absolute bottom-0 left-0 right-0 flex animate-slideup bg-[#1b191f] border-t border-solid border-[#555257] z-10">
           <MusicPlayer />
         </div>
       )}
